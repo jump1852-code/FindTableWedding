@@ -6,6 +6,7 @@
   <title>K&P Wedding — Landing</title>
   <meta name="description" content="K&P Wedding at The Banquet Hall at Nathong — แผนที่และค้นหาโต๊ะของท่าน" />
   <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
   <style>
     :root{
       --cream:#F6F3EE; --sage:#C9D7C8; --forest:#0F5A3C; --blush:#E7C7CE;
@@ -15,7 +16,7 @@
     *{box-sizing:border-box}
     html,body{margin:0;background:linear-gradient(180deg,var(--cream),#fff);color:var(--ink);
       font-family:"Sarabun",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif}
-    a{color:var(--forest);text-decoration:none} a:hover{text-decoration:underline}
+    a{color:#0B734C;text-decoration:none} a:hover{text-decoration:underline}
     .wrap{max-width:1040px;margin:auto;padding:24px}
     .card{background:#fff;border:1px solid #ececec;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
 
@@ -44,31 +45,40 @@
       .date-box{padding:10px 16px}
     }
 
-    /* Existing styles */
+    /* Collapsible (accordion) */
+    .acc { margin-top: 18px; }
+    .acc details.card { padding: 0; overflow: hidden; }
+    .acc summary {
+      list-style: none; cursor: pointer; user-select: none;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px; padding: 18px 22px; font-weight: 800; color: var(--forest);
+    }
+    .acc summary::-webkit-details-marker { display: none; }
+    .acc .chev { transition: transform .2s ease; color: currentColor; }
+    details[open] .chev { transform: rotate(180deg); }
+    .acc .body { padding: 0 22px 22px; }
+    /* Solid-green headers for 17:09 & 18:00 sections */
+    #acc-vow > summary, #acc-dinner > summary {
+      background: var(--forest); color: #fff;
+    }
+    #acc-vow .chev, #acc-dinner .chev { color:#fff; }
+
+    /* General UI */
     .hero{display:grid;grid-template-columns:1fr;align-items:center;background:var(--cream)}
     .hero img{width:100%;display:block;object-fit:cover;max-height:520px}
-    .hero-head{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;pointer-events:none}
-    .logo-date{margin-top:18px;background:rgba(255,255,255,.7);backdrop-filter:saturate(160%) blur(6px);
-      padding:12px 18px;border-radius:999px;font-weight:700;color:var(--forest);letter-spacing:.04em}
     .section{padding:28px 22px}
     .section h2{margin:0 0 10px 0;font-size:1.4rem;color:var(--forest)}
     .muted{color:var(--muted);font-size:.95rem}
-    .map-embed,.pane-frame,.pdf-embed{width:100%;height:var(--pane-h);border:0;border-radius:16px;box-shadow:var(--shadow)}
+    .hint{font-size:.9rem;color:#6b6b6b}
+    .map-embed,.pane-frame{width:100%;height:var(--pane-h);border:0;border-radius:16px;box-shadow:var(--shadow)}
     .img-frame{width:100%;background:#fff;border-radius:16px;box-shadow:var(--shadow);overflow:hidden;border:1px solid #eee}
     .img-frame img{width:100%;display:block}
-    .cta{display:flex;justify-content:center;padding:20px}
-    .btn{appearance:none;border:0;border-radius:999px;padding:14px 22px;font-size:1.05rem;font-weight:700;cursor:pointer;
-      color:#fff;background:linear-gradient(135deg,var(--forest),#186e4b);box-shadow:0 8px 18px rgba(15,90,60,.25);
-      transition:transform .05s ease, box-shadow .2s ease}
-    .btn:hover{box-shadow:0 10px 22px rgba(15,90,60,.32)} .btn:active{transform:translateY(1px)}
-    .collapse{display:none}
     .tabs{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
-    .tab-btn{padding:10px 14px;border-radius:12px;border:1px solid #dfe6df;background:#f7faf7;color:#0f5a3c;font-weight:600;cursor:pointer}
-    .tab-btn[aria-selected="true"]{background:var(--forest);color:#fff;border-color:var(--forest)}
+    .tab-btn{padding:10px 14px;border-radius:12px;border:1px solid #dfe6df;background:#f7faf7;color:#0f5a3c;font-weight:700;cursor:pointer}
+    .tab-btn[aria-selected="true"]{background:#0f5a3c;color:#fff;border-color:#0f5a3c}
     .tab-pane{display:none;margin-top:14px} .tab-pane.active{display:block}
     .badge{display:inline-flex;gap:8px;align-items:center;background:#fff;border:1px solid #e9e9e9;padding:8px 12px;border-radius:999px;font-size:.95rem}
     .flex-between{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-    .hint{font-size:.9rem;color:#6b6b6b}
     footer{padding:36px 8px 18px;color:#7a7a7a;text-align:center}
     @media (min-width:920px){.hero{grid-template-columns:1fr}.hero img{max-height:620px}}
   </style>
@@ -78,14 +88,13 @@
 
     <!-- Invitation header + schedule -->
     <div class="card invite" aria-label="คำเชิญและกำหนดการ">
-      <div class="tiny">ขอเรียนเชิญทุกท่านเข้าร่วมในพิธีมงคลสมรส<br>ระหว่าง</div>
+      <div class="tiny">ขอเรียนเชิญทุกท่านเป็นเกียรติเนื่องในพิธีมงคลสมรส<br>ระหว่าง</div>
       <div class="names-th">นางสาวกานต์ธิดา ตระกลกาญจน์ (ไอซ์)</div>
       <div class="names-en">KANTIDA TRAKOLKARN (ICE)</div>
       <svg class="infinity" viewBox="0 0 120 60" aria-hidden="true">
-        <path d="M20,30 C20,18 30,10 40,10 C55,10 65,30 80,30 C95,30 100,20 100,15
-                 M20,30 C20,42 30,50 40,50 C55,50 65,30 80,30 C95,30 100,40 100,45"/>
-      </svg>
-      <div class="names-th">นายพัสกร ปองเสงี่ยม (จ้ำ)</div>
+    <path d="M 20,30 C 20,50 40,50 60,30 C 80,10 100,10 100,30 C 100,50 80,50 60,30 C 40,10 20,10 20,30"/>
+</svg>
+      <div class="names-th">นายพัสกร ปองเสงี่ยม (จั้ม)</div>
       <div class="names-en">PASSAKORN PONGSANGIAM (JUMM)</div>
       <div class="schedule">
         <div class="schedule-grid">
@@ -110,135 +119,156 @@
       </div>
     </div>
 
-    <!-- Cover -->
+    <!-- Cover (top pill tag removed per your request) -->
     <div class="card hero" style="margin-top:18px" aria-label="Wedding Cover">
       <img src="CoverImage.jpg" alt="K&P Wedding — Cover" />
     </div>
 
-    <!-- Google Map (updated venue name) -->
-    <div class="card section" style="margin-top:18px">
-      <div class="flex-between">
-        <h2>แผนที่ไป <span style="white-space:nowrap">The Banquet Hall at Nathong</span></h2>
-        <a class="badge" target="_blank" rel="noopener"
-           href="https://www.google.com/maps/search/?api=1&query=The+Banquet+Hall+at+Nathong">
-          เปิดใน Google Maps ↗
-        </a>
-      </div>
-     
-      <p class="hint" style="margin-top:10px">เลื่อน/ซูมรูปด้วยนิ้วสองนิ้วบนมือถือ หรือคลิกขวา/เปิดภาพในแท็บใหม่เพื่อดูเต็มจอ</p>
-    </div>
-      <p class="muted">แนะนำให้มาก่อนเวลาเพื่อหาที่จอดรถได้สะดวกครับ</p>
-      <iframe class="map-embed" loading="lazy" allowfullscreen
-        referrerpolicy="no-referrer-when-downgrade"
-        src="https://www.google.com/maps?q=The%20Banquet%20Hall%20at%20Nathong&hl=th&z=16&output=embed"
-        title="แผนที่ Google Maps — The Banquet Hall at Nathong"></iframe>
+    <!-- Accordion -->
+    <div class="acc">
 
-           <div class="card section" style="margin-top:18px">
-      <h2>แผนที่ภายในสถานที่ &amp; ผังที่จอดรถ</h2>
-      <div class="img-frame">
-        <img src="NathongMap.jpg" alt="แผนที่ภายใน — ที่จอดรถ The Banquet Hall at Nathong" />
-      </div>
-    </div>
+      <!-- MAP + PARKING (same category) -->
+      <details class="card section" id="acc-map" open>
+        <summary>
+          <span>แผนที่ไป <span style="white-space:nowrap">The Banquet Hall at Nathong</span></span>
+          <span class="chev">▾</span>
+        </summary>
+        <div class="body">
+          <div class="flex-between">
+            <a class="badge" target="_blank" rel="noopener"
+               href="https://www.google.com/maps/search/?api=1&query=The+Banquet+Hall+at+Nathong">
+              เปิดใน Google Maps ↗
+            </a>
+            <span class="muted">แนะนำให้มาก่อนเวลาเพื่อหาที่จอดรถได้สะดวกครับ</span>
+          </div>
 
-    <!-- NEW: Vow ceremony details -->
-    <div class="card section" style="margin-top:18px">
-      <h2>รายละเอียดพิธีแลกแหวน (Vow Ceremony)</h2>
-      <div class="img-frame">
-        <img src="VowLayout.png" alt="รายละเอียดผังและจุดสำคัญในพิธีแลกแหวน" />
-      </div>
-      <p class="hint" style="margin-top:10px">ภาพอธิบายจุดสำคัญของพิธี — แตะเพื่อเปิดในแท็บใหม่หากต้องการดูแบบเต็มขนาด</p>
-    </div>
+          <iframe class="map-embed" loading="lazy" allowfullscreen
+            referrerpolicy="no-referrer-when-downgrade"
+            data-src="https://www.google.com/maps?q=The%20Banquet%20Hall%20at%20Nathong&hl=th&z=16&output=embed"
+            title="แผนที่ Google Maps — The Banquet Hall at Nathong"></iframe>
 
-    <!-- Inside venue / parking map -->
-  
-
-    <!-- CTA -->
-    <div class="cta">
-      <button id="openFinder" class="btn">ค้นหาโต้ะของท่าน</button>
-    </div>
-
-    <!-- Expandable finder -->
-    <div id="finderSection" class="card section collapse" aria-hidden="true">
-      <div class="flex-between">
-        <h2>ตรวจสอบที่นั่งของท่าน</h2>
-        <span class="hint">สลับแท็บด้านล่างเพื่อดูรายการตามต้องการ</span>
-      </div>
-
-      <div class="tabs" role="tablist" aria-label="ค้นหาโต๊ะ">
-        <button class="tab-btn" role="tab" id="tab-finder" aria-controls="pane-finder" aria-selected="true">โปรแกรมค้นหาโต๊ะ</button>
-        <button class="tab-btn" role="tab" id="tab-list" aria-controls="pane-list" aria-selected="false">รายชื่อแบบตาราง (PDF)</button>
-        <button class="tab-btn" role="tab" id="tab-layout" aria-controls="pane-layout" aria-selected="false">ผังและรายชื่อ (ภาพ)</button>
-      </div>
-
-      <div id="pane-finder" class="tab-pane active" role="tabpanel" aria-labelledby="tab-finder">
-        <iframe id="finderFrame" class="pane-frame" title="โปรแกรมค้นหาโต๊ะ" loading="lazy"
-                src="" data-src="FindTable.html"></iframe>
-      </div>
-
-      <div id="pane-list" class="tab-pane" role="tabpanel" aria-labelledby="tab-list" hidden>
-        <object id="pdfEmbed" class="pdf-embed" type="application/pdf" data="">
-          <p>เบราว์เซอร์ของคุณแสดง PDF ไม่ได้
-            <a href="WeddingList.pdf" target="_blank" rel="noopener">กดเพื่อดาวน์โหลดรายชื่อ (PDF)</a></p>
-        </object>
-      </div>
-
-      <div id="pane-layout" class="tab-pane" role="tabpanel" aria-labelledby="tab-layout" hidden>
-        <div class="img-frame">
-          <img id="layoutImg" src="" alt="ผังที่นั่งและรายชื่อ" />
+          <h3 class="section" style="padding:18px 0 8px;margin:0;color:#0f5a3c">แผนที่ภายในสถานที่ &amp; ผังที่จอดรถ</h3>
+          <div class="img-frame">
+            <img src="NathongMap.jpg" alt="แผนที่ภายใน — ที่จอดรถ The Banquet Hall at Nathong" />
+          </div>
         </div>
-      </div>
+      </details>
+
+      <!-- 17:09 — VOW (solid green header) -->
+      <details class="card section" id="acc-vow">
+        <summary>
+          <span>17:09 — พิธีแลกแหวน — รายละเอียดแผนผัง</span>
+          <span class="chev">▾</span>
+        </summary>
+        <div class="body">
+          <div class="img-frame">
+            <img src="VowLayout.png" alt="รายละเอียดผังและจุดสำคัญในพิธีแลกแหวน" />
+          </div>
+          <p class="hint">ภาพอธิบายจุดสำคัญของพิธี — แตะเพื่อเปิดในแท็บใหม่หากต้องการดูแบบเต็มขนาด</p>
+        </div>
+      </details>
+
+      <!-- 18:00 — DINNER + FINDER (solid green header) -->
+      <details class="card section" id="acc-dinner">
+        <summary>
+          <span>18:00 — กินเลี้ยงฉลอง — ค้นหาโต้ะของท่าน</span>
+          <span class="chev">▾</span>
+        </summary>
+        <div class="body">
+          <!-- Tabs: Finder + Layout image -->
+          <div class="tabs" role="tablist" aria-label="ค้นหาโต๊ะ">
+            <button class="tab-btn" role="tab" id="tab-finder" aria-controls="pane-finder" aria-selected="true">โปรแกรมค้นหาโต๊ะ</button>
+            <button class="tab-btn" role="tab" id="tab-layout" aria-controls="pane-layout" aria-selected="false">ผังและรายชื่อ (ภาพ)</button>
+          </div>
+
+          <div id="pane-finder" class="tab-pane active" role="tabpanel" aria-labelledby="tab-finder">
+            <iframe id="finderFrame" class="pane-frame" title="โปรแกรมค้นหาโต๊ะ" loading="lazy"
+                    src="" data-src="FindTable.html"></iframe>
+          </div>
+
+          <div id="pane-layout" class="tab-pane" role="tabpanel" aria-labelledby="tab-layout" hidden>
+            <div class="img-frame">
+              <img id="layoutImg" src="" alt="ผังที่นั่งและรายชื่อ" />
+            </div>
+          </div>
+        </div>
+      </details>
+
     </div>
 
     <footer>© 2025 K &amp; P — ขอบคุณที่มาร่วมเป็นสักขีพยานในวันพิเศษของพวกเรา</footer>
   </div>
 
   <script>
-    // Open/close finder
-    const openBtn = document.getElementById('openFinder');
-    const section = document.getElementById('finderSection');
-    openBtn.addEventListener('click', () => {
-      if (section.classList.contains('collapse')) {
-        section.classList.remove('collapse'); section.setAttribute('aria-hidden','false');
-        lazyLoadPane('finder'); setTimeout(()=>section.scrollIntoView({behavior:'smooth',block:'start'}),60);
-      } else { section.classList.add('collapse'); section.setAttribute('aria-hidden','true'); }
-    });
-
-    // Tabs
+    // Tabs (2 tabs inside Dinner section)
     const tabs = [
-      { id:'finder', btn:'tab-finder', pane:'pane-finder', loader:()=>lazyLoadPane('finder') },
-      { id:'list',   btn:'tab-list',   pane:'pane-list',   loader:()=>lazyLoadPane('list') },
-      { id:'layout', btn:'tab-layout', pane:'pane-layout', loader:()=>lazyLoadPane('layout') }
+      { id:'finder', btn:'tab-finder', pane:'pane-finder', loader:()=>lazyLoad('finder') },
+      { id:'layout', btn:'tab-layout', pane:'pane-layout', loader:()=>lazyLoad('layout') }
     ];
     let current='finder';
-    tabs.forEach(t=>document.getElementById(t.btn).addEventListener('click',()=>switchTab(t.id)));
+    tabs.forEach(t=>document.getElementById(t.btn)?.addEventListener('click',()=>switchTab(t.id)));
+
     function switchTab(id){
       if(id===current) return;
       tabs.forEach(t=>{
-        const btn=document.getElementById(t.btn), pane=document.getElementById(t.pane), active=(t.id===id);
-        btn.setAttribute('aria-selected', active?'true':'false'); pane.classList.toggle('active',active); pane.hidden=!active;
+        const btn=document.getElementById(t.btn);
+        const pane=document.getElementById(t.pane);
+        const active=(t.id===id);
+        btn.setAttribute('aria-selected', active?'true':'false');
+        pane.classList.toggle('active',active);
+        pane.hidden=!active;
       });
-      current=id; tabs.find(t=>t.id===id).loader();
+      current=id;
+      tabs.find(t=>t.id===id).loader();
     }
 
-    // Lazy-load panes
-    let loaded={finder:false,list:false,layout:false};
-    function lazyLoadPane(which){
+    // Lazy-load map iframe when the first accordion opens
+    const mapDetails=document.getElementById('acc-map');
+    function loadMap(){
+      const iframe=mapDetails.querySelector('iframe[data-src]');
+      if(iframe && !iframe.src) iframe.src=iframe.dataset.src;
+    }
+    mapDetails.addEventListener('toggle',()=>{ if(mapDetails.open) loadMap(); });
+    if(mapDetails.open) loadMap();
+
+    // Lazy-load finder/layout when Dinner section first opens
+    const dinner=document.getElementById('acc-dinner');
+    let dinnerLoaded=false;
+    dinner.addEventListener('toggle',()=>{
+      if(dinner.open && !dinnerLoaded){
+        lazyLoad('finder'); // load default tab
+        dinnerLoaded=true;
+      }
+    });
+
+    // Lazy loaders
+    let loaded={finder:false,layout:false};
+    function lazyLoad(which){
       if(loaded[which]) return;
-      if(which==='finder'){ const f=document.getElementById('finderFrame'); f.src=f.dataset.src; }
-      if(which==='list'){ const o=document.getElementById('pdfEmbed'); o.data="WeddingList.pdf#toolbar=1&navpanes=0"; }
-      if(which==='layout'){ const img=document.getElementById('layoutImg'); img.src="Layout%20%2B%20Name.png"; }
+      if(which==='finder'){
+        const f=document.getElementById('finderFrame');
+        if(f && !f.src) f.src=f.dataset.src;
+      }
+      if(which==='layout'){
+        const img=document.getElementById('layoutImg');
+        if(img && !img.src) img.src="Layout%20%2B%20Name.png"; // URL-encoded filename
+      }
       loaded[which]=true;
     }
 
-    // Optional deep-link: #finder / #list / #layout
-    if (location.hash){
-      const hash=location.hash.replace('#','');
-      if(['finder','list','layout'].includes(hash)){
-        section.classList.remove('collapse'); section.setAttribute('aria-hidden','false');
-        switchTab(hash); setTimeout(()=>section.scrollIntoView({behavior:'smooth'}),80);
-      }
+    // Deep-link: #map / #vow / #dinner / #finder / #layout
+    const hash = location.hash.replace('#','');
+    const ids = { map:'acc-map', vow:'acc-vow', dinner:'acc-dinner' };
+    if (ids[hash]) {
+      const el = document.getElementById(ids[hash]);
+      if (el && !el.open) el.open = true;
+      setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}), 60);
+    }
+    if (['finder','layout'].includes(hash)) {
+      const el = document.getElementById('acc-dinner');
+      if (!el.open) el.open = true;
+      setTimeout(()=>{ switchTab(hash); el.scrollIntoView({behavior:'smooth'}); }, 80);
     }
   </script>
 </body>
 </html>
-
