@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>K&P Wedding — Landing</title>
+  <meta name="description" content="K&P Wedding at The Banquet Hall at Nathong — แผนที่และค้นหาโต๊ะของท่าน" />
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --cream:#F6F3EE; --sage:#C9D7C8; --forest:#0F5A3C; --blush:#E7C7CE;
+      --ink:#1b1b1b; --muted:#6b6b6b; --radius:22px; --shadow:0 8px 24px rgba(0,0,0,.12);
+      --pane-h:clamp(480px, 70vh, 900px);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;background:linear-gradient(180deg,var(--cream),#fff);color:var(--ink);
+      font-family:"Sarabun",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif}
+    a{color:var(--forest);text-decoration:none} a:hover{text-decoration:underline}
+    .wrap{max-width:1040px;margin:auto;padding:24px}
+    .card{background:#fff;border:1px solid #ececec;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+
+    /* Invitation + schedule */
+    .invite{padding:28px 22px;text-align:center}
+    .invite .tiny{color:#777;font-weight:600;letter-spacing:.03em;margin-bottom:6px}
+    .names-th{color:var(--forest);font-weight:800;font-size:clamp(22px,3.2vw,34px);line-height:1.25;margin:6px 0 2px}
+    .names-en{color:var(--forest);font-weight:700;letter-spacing:.25em;font-size:clamp(13px,1.4vw,16px);opacity:.95}
+    .infinity{margin:14px auto 12px;width:88px;height:48px;display:block}
+    .infinity path{stroke:#B86B68;stroke-width:6;fill:none;opacity:.9}
+    .schedule{margin-top:8px}
+    .schedule-grid{display:grid;gap:18px;align-items:center;grid-template-columns:1fr;}
+    .date-box{display:grid;place-items:center;color:#2a2a2a;padding:10px 6px}
+    .date-top{font-weight:700;color:#3b3b3b;margin-bottom:2px}
+    .date-num{font-size:clamp(44px,8vw,74px);font-weight:300;line-height:1}
+    .date-month{font-size:clamp(18px,3vw,24px);letter-spacing:.05em}
+    .date-year{margin-left:6px;font-size:clamp(16px,2.4vw,20px)}
+    .prog{border-top:1px dashed #c9c9c9;padding:14px 6px}
+    .slot{margin:8px 0 14px}
+    .time{color:#4e6e5c;font-weight:800;letter-spacing:.04em}
+    .en{font-weight:700;letter-spacing:.24em}
+    .th{color:#666;margin-top:2px}
+    @media (min-width:860px){
+      .schedule-grid{grid-template-columns: 1.1fr 1.2fr}
+      .prog{border-top:0;border-left:2px dashed #cfcfcf;padding:6px 16px}
+      .date-box{padding:10px 16px}
+    }
+
+    /* Existing styles */
+    .hero{display:grid;grid-template-columns:1fr;align-items:center;background:var(--cream)}
+    .hero img{width:100%;display:block;object-fit:cover;max-height:520px}
+    .hero-head{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;pointer-events:none}
+    .logo-date{margin-top:18px;background:rgba(255,255,255,.7);backdrop-filter:saturate(160%) blur(6px);
+      padding:12px 18px;border-radius:999px;font-weight:700;color:var(--forest);letter-spacing:.04em}
+    .section{padding:28px 22px}
+    .section h2{margin:0 0 10px 0;font-size:1.4rem;color:var(--forest)}
+    .muted{color:var(--muted);font-size:.95rem}
+    .map-embed,.pane-frame,.pdf-embed{width:100%;height:var(--pane-h);border:0;border-radius:16px;box-shadow:var(--shadow)}
+    .img-frame{width:100%;background:#fff;border-radius:16px;box-shadow:var(--shadow);overflow:hidden;border:1px solid #eee}
+    .img-frame img{width:100%;display:block}
+    .cta{display:flex;justify-content:center;padding:20px}
+    .btn{appearance:none;border:0;border-radius:999px;padding:14px 22px;font-size:1.05rem;font-weight:700;cursor:pointer;
+      color:#fff;background:linear-gradient(135deg,var(--forest),#186e4b);box-shadow:0 8px 18px rgba(15,90,60,.25);
+      transition:transform .05s ease, box-shadow .2s ease}
+    .btn:hover{box-shadow:0 10px 22px rgba(15,90,60,.32)} .btn:active{transform:translateY(1px)}
+    .collapse{display:none}
+    .tabs{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+    .tab-btn{padding:10px 14px;border-radius:12px;border:1px solid #dfe6df;background:#f7faf7;color:#0f5a3c;font-weight:600;cursor:pointer}
+    .tab-btn[aria-selected="true"]{background:var(--forest);color:#fff;border-color:var(--forest)}
+    .tab-pane{display:none;margin-top:14px} .tab-pane.active{display:block}
+    .badge{display:inline-flex;gap:8px;align-items:center;background:#fff;border:1px solid #e9e9e9;padding:8px 12px;border-radius:999px;font-size:.95rem}
+    .flex-between{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+    .hint{font-size:.9rem;color:#6b6b6b}
+    footer{padding:36px 8px 18px;color:#7a7a7a;text-align:center}
+    @media (min-width:920px){.hero{grid-template-columns:1fr}.hero img{max-height:620px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- Invitation header + schedule -->
+    <div class="card invite" aria-label="คำเชิญและกำหนดการ">
+      <div class="tiny">มีความยินดีขอเรียนเชิญเพื่อเป็นเกียรติเนื่องในพิธีมงคลสมรส<br>ระหว่าง</div>
+      <div class="names-th">นางสาวกานต์ธิดา ตระกาลกาญจน์ (ไอซ์)</div>
+      <div class="names-en">KANTIDA TRAKOLKARN (ICE)</div>
+      <svg class="infinity" viewBox="0 0 120 60" aria-hidden="true">
+        <path d="M20,30 C20,18 30,10 40,10 C55,10 65,30 80,30 C95,30 100,20 100,15
+                 M20,30 C20,42 30,50 40,50 C55,50 65,30 80,30 C95,30 100,40 100,45"/>
+      </svg>
+      <div class="names-th">นายพัสกร ปองเสงี่ยม (จั้ม)</div>
+      <div class="names-en">PASSAKORN PONGSANGIAM (JUMM)</div>
+      <div class="schedule">
+        <div class="schedule-grid">
+          <div class="date-box">
+            <div class="date-top">วันอาทิตย์</div>
+            <div class="date-num">09</div>
+            <div><span class="date-month">พฤศจิกายน</span> <span class="date-year">2568</span></div>
+          </div>
+          <div class="prog">
+            <div class="slot">
+              <div class="time">17.09 PM</div>
+              <div class="en">VOW CEREMONY</div>
+              <div class="th">(พิธีแลกแหวน)</div>
+            </div>
+            <div class="slot">
+              <div class="time">18.00 PM</div>
+              <div class="en">CELEBRATION AND DINNING</div>
+              <div class="th">(โต๊ะจีน)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cover -->
+    <div class="card hero" style="margin-top:18px" aria-label="Wedding Cover">
+      <img src="CoverImage.jpg" alt="K&P Wedding — Cover" />
+    </div>
+
+    <!-- Google Map (updated venue name) -->
+    <div class="card section" style="margin-top:18px">
+      <div class="flex-between">
+        <h2>แผนที่ไป <span style="white-space:nowrap">The Banquet Hall at Nathong</span></h2>
+        <a class="badge" target="_blank" rel="noopener"
+           href="https://www.google.com/maps/search/?api=1&query=The+Banquet+Hall+at+Nathong">
+          เปิดใน Google Maps ↗
+        </a>
+      </div>
+     
+      <p class="hint" style="margin-top:10px">เลื่อน/ซูมรูปด้วยนิ้วสองนิ้วบนมือถือ หรือคลิกขวา/เปิดภาพในแท็บใหม่เพื่อดูเต็มจอ</p>
+    </div>
+      <p class="muted">แนะนำให้มาก่อนเวลาเพื่อหาที่จอดรถได้สะดวกครับ</p>
+      <iframe class="map-embed" loading="lazy" allowfullscreen
+        referrerpolicy="no-referrer-when-downgrade"
+        src="https://www.google.com/maps?q=The%20Banquet%20Hall%20at%20Nathong&hl=th&z=16&output=embed"
+        title="แผนที่ Google Maps — The Banquet Hall at Nathong"></iframe>
+
+           <div class="card section" style="margin-top:18px">
+      <h2>แผนที่ภายในสถานที่ &amp; ผังที่จอดรถ</h2>
+      <div class="img-frame">
+        <img src="NathongMap.jpg" alt="แผนที่ภายใน — ที่จอดรถ The Banquet Hall at Nathong" />
+      </div>
+    </div>
+
+    <!-- NEW: Vow ceremony details -->
+    <div class="card section" style="margin-top:18px">
+      <h2>รายละเอียดพิธีแลกแหวน (Vow Ceremony)</h2>
+      <div class="img-frame">
+        <img src="VowLayout.png" alt="รายละเอียดผังและจุดสำคัญในพิธีแลกแหวน" />
+      </div>
+      <p class="hint" style="margin-top:10px">ภาพอธิบายจุดสำคัญของพิธี — แตะเพื่อเปิดในแท็บใหม่หากต้องการดูแบบเต็มขนาด</p>
+    </div>
+
+    <!-- Inside venue / parking map -->
+  
+
+    <!-- CTA -->
+    <div class="cta">
+      <button id="openFinder" class="btn">ค้นหาโต้ะของท่าน</button>
+    </div>
+
+    <!-- Expandable finder -->
+    <div id="finderSection" class="card section collapse" aria-hidden="true">
+      <div class="flex-between">
+        <h2>ตรวจสอบที่นั่งของท่าน</h2>
+        <span class="hint">สลับแท็บด้านล่างเพื่อดูรายการตามต้องการ</span>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="ค้นหาโต๊ะ">
+        <button class="tab-btn" role="tab" id="tab-finder" aria-controls="pane-finder" aria-selected="true">โปรแกรมค้นหาโต๊ะ</button>
+        <button class="tab-btn" role="tab" id="tab-list" aria-controls="pane-list" aria-selected="false">รายชื่อแบบตาราง (PDF)</button>
+        <button class="tab-btn" role="tab" id="tab-layout" aria-controls="pane-layout" aria-selected="false">ผังและรายชื่อ (ภาพ)</button>
+      </div>
+
+      <div id="pane-finder" class="tab-pane active" role="tabpanel" aria-labelledby="tab-finder">
+        <iframe id="finderFrame" class="pane-frame" title="โปรแกรมค้นหาโต๊ะ" loading="lazy"
+                src="" data-src="FindTable.html"></iframe>
+      </div>
+
+      <div id="pane-list" class="tab-pane" role="tabpanel" aria-labelledby="tab-list" hidden>
+        <object id="pdfEmbed" class="pdf-embed" type="application/pdf" data="">
+          <p>เบราว์เซอร์ของคุณแสดง PDF ไม่ได้
+            <a href="WeddingList.pdf" target="_blank" rel="noopener">กดเพื่อดาวน์โหลดรายชื่อ (PDF)</a></p>
+        </object>
+      </div>
+
+      <div id="pane-layout" class="tab-pane" role="tabpanel" aria-labelledby="tab-layout" hidden>
+        <div class="img-frame">
+          <img id="layoutImg" src="" alt="ผังที่นั่งและรายชื่อ" />
+        </div>
+      </div>
+    </div>
+
+    <footer>© 2025 K &amp; P — ขอบคุณที่มาร่วมเป็นสักขีพยานในวันพิเศษของพวกเรา</footer>
+  </div>
+
+  <script>
+    // Open/close finder
+    const openBtn = document.getElementById('openFinder');
+    const section = document.getElementById('finderSection');
+    openBtn.addEventListener('click', () => {
+      if (section.classList.contains('collapse')) {
+        section.classList.remove('collapse'); section.setAttribute('aria-hidden','false');
+        lazyLoadPane('finder'); setTimeout(()=>section.scrollIntoView({behavior:'smooth',block:'start'}),60);
+      } else { section.classList.add('collapse'); section.setAttribute('aria-hidden','true'); }
+    });
+
+    // Tabs
+    const tabs = [
+      { id:'finder', btn:'tab-finder', pane:'pane-finder', loader:()=>lazyLoadPane('finder') },
+      { id:'list',   btn:'tab-list',   pane:'pane-list',   loader:()=>lazyLoadPane('list') },
+      { id:'layout', btn:'tab-layout', pane:'pane-layout', loader:()=>lazyLoadPane('layout') }
+    ];
+    let current='finder';
+    tabs.forEach(t=>document.getElementById(t.btn).addEventListener('click',()=>switchTab(t.id)));
+    function switchTab(id){
+      if(id===current) return;
+      tabs.forEach(t=>{
+        const btn=document.getElementById(t.btn), pane=document.getElementById(t.pane), active=(t.id===id);
+        btn.setAttribute('aria-selected', active?'true':'false'); pane.classList.toggle('active',active); pane.hidden=!active;
+      });
+      current=id; tabs.find(t=>t.id===id).loader();
+    }
+
+    // Lazy-load panes
+    let loaded={finder:false,list:false,layout:false};
+    function lazyLoadPane(which){
+      if(loaded[which]) return;
+      if(which==='finder'){ const f=document.getElementById('finderFrame'); f.src=f.dataset.src; }
+      if(which==='list'){ const o=document.getElementById('pdfEmbed'); o.data="WeddingList.pdf#toolbar=1&navpanes=0"; }
+      if(which==='layout'){ const img=document.getElementById('layoutImg'); img.src="Layout%20%2B%20Name.png"; }
+      loaded[which]=true;
+    }
+
+    // Optional deep-link: #finder / #list / #layout
+    if (location.hash){
+      const hash=location.hash.replace('#','');
+      if(['finder','list','layout'].includes(hash)){
+        section.classList.remove('collapse'); section.setAttribute('aria-hidden','false');
+        switchTab(hash); setTimeout(()=>section.scrollIntoView({behavior:'smooth'}),80);
+      }
+    }
+  </script>
+</body>
+</html>
