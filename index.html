@@ -169,30 +169,32 @@
       </details>
 
       <!-- 18:00 — DINNER + FINDER (solid green header) -->
-      <details class="card section" id="acc-dinner">
-        <summary>
-          <span>18:00 — กินเลี้ยงฉลอง — ค้นหาโต้ะของท่าน</span>
-          <span class="chev">▾</span>
-        </summary>
-        <div class="body">
-          <!-- Tabs: Finder + Layout image -->
-          <div class="tabs" role="tablist" aria-label="ค้นหาโต๊ะ">
-            <button class="tab-btn" role="tab" id="tab-finder" aria-controls="pane-finder" aria-selected="true">โปรแกรมค้นหาโต๊ะ</button>
-            <button class="tab-btn" role="tab" id="tab-layout" aria-controls="pane-layout" aria-selected="false">ผังและรายชื่อ (ภาพ)</button>
-          </div>
+     <details class="card section" id="acc-dinner">
+  <summary>
+    <span>18:00 — กินเลี้ยงฉลอง — ค้นหาโต้ะของท่าน</span>
+    <span class="chev">▾</span>
+  </summary>
+  <div class="body">
+    <!-- Tabs: Finder + Layout image -->
+    <div class="tabs" role="tablist" aria-label="ค้นหาโต๊ะ">
+      <button class="tab-btn" role="tab" id="tab-finder" aria-controls="pane-finder" aria-selected="true">โปรแกรมค้นหาโต๊ะ</button>
+      <button class="tab-btn" role="tab" id="tab-layout" aria-controls="pane-layout" aria-selected="false">ผังและรายชื่อ (ภาพ)</button>
+    </div>
 
-          <div id="pane-finder" class="tab-pane active" role="tabpanel" aria-labelledby="tab-finder">
-            <iframe id="finderFrame" class="pane-frame" title="โปรแกรมค้นหาโต๊ะ" loading="lazy"
-                    src="" data-src="https://jump1852-code.github.io/FindTableWedding/FindTable.html"></iframe>
-          </div>
+    <div id="pane-finder" class="tab-pane active" role="tabpanel" aria-labelledby="tab-finder">
+      <!-- PRELOAD (no more lazy data-src) -->
+      <iframe id="finderFrame" class="pane-frame" title="โปรแกรมค้นหาโต๊ะ" loading="eager"
+              src="FindTable.html"></iframe>
+    </div>
 
-          <div id="pane-layout" class="tab-pane" role="tabpanel" aria-labelledby="tab-layout" hidden>
-            <div class="img-frame">
-              <img id="layoutImg" src="" alt="ผังที่นั่งและรายชื่อ" />
-            </div>
-          </div>
-        </div>
-      </details>
+    <div id="pane-layout" class="tab-pane" role="tabpanel" aria-labelledby="tab-layout" hidden>
+      <div class="img-frame">
+        <!-- try encoded first; JS below will auto-fallback to literal path if needed -->
+        <img id="layoutImg" src="Layout%20%2B%20Name.png" alt="ผังที่นั่งและรายชื่อ" />
+      </div>
+    </div>
+  </div>
+</details>
 
     </div>
 
@@ -200,76 +202,70 @@
   </div>
 
   <script>
-    // Tabs (2 tabs inside Dinner section)
-    const tabs = [
-      { id:'finder', btn:'tab-finder', pane:'pane-finder', loader:()=>lazyLoad('finder') },
-      { id:'layout', btn:'tab-layout', pane:'pane-layout', loader:()=>lazyLoad('layout') }
-    ];
-    let current='finder';
-    tabs.forEach(t=>document.getElementById(t.btn)?.addEventListener('click',()=>switchTab(t.id)));
+  // Tabs (2 tabs inside Dinner section)
+  const tabs = [
+    { id:'finder', btn:'tab-finder', pane:'pane-finder' },
+    { id:'layout', btn:'tab-layout', pane:'pane-layout' }
+  ];
+  let current='finder';
+  tabs.forEach(t=>{
+    const b=document.getElementById(t.btn);
+    if(b) b.addEventListener('click',()=>switchTab(t.id));
+  });
 
-    function switchTab(id){
-      if(id===current) return;
-      tabs.forEach(t=>{
-        const btn=document.getElementById(t.btn);
-        const pane=document.getElementById(t.pane);
-        const active=(t.id===id);
-        btn.setAttribute('aria-selected', active?'true':'false');
-        pane.classList.toggle('active',active);
-        pane.hidden=!active;
-      });
-      current=id;
-      tabs.find(t=>t.id===id).loader();
-    }
+  function switchTab(id){
+    if(id===current) return;
+    tabs.forEach(t=>{
+      const btn=document.getElementById(t.btn);
+      const pane=document.getElementById(t.pane);
+      const active=(t.id===id);
+      btn.setAttribute('aria-selected', active?'true':'false');
+      pane.classList.toggle('active',active);
+      pane.hidden=!active;
+    });
+    current=id;
+  }
 
-    // Lazy-load map iframe when the first accordion opens
-    const mapDetails=document.getElementById('acc-map');
-    function loadMap(){
-      const iframe=mapDetails.querySelector('iframe[data-src]');
-      if(iframe && !iframe.src) iframe.src=iframe.dataset.src;
-    }
-    mapDetails.addEventListener('toggle',()=>{ if(mapDetails.open) loadMap(); });
-    if(mapDetails.open) loadMap();
+  // Lazy-load map iframe when the first accordion opens
+  const mapDetails=document.getElementById('acc-map');
+  function loadMap(){
+    const iframe=mapDetails.querySelector('iframe[data-src]');
+    if(iframe && !iframe.src) iframe.src=iframe.dataset.src;
+  }
+  mapDetails.addEventListener('toggle',()=>{ if(mapDetails.open) loadMap(); });
+  if(mapDetails.open) loadMap();
 
-    // Lazy-load finder/layout when Dinner section first opens
-    const dinner=document.getElementById('acc-dinner');
-    let dinnerLoaded=false;
-    dinner.addEventListener('toggle',()=>{
-      if(dinner.open && !dinnerLoaded){
-        lazyLoad('finder'); // load default tab
-        dinnerLoaded=true;
+  // Robust loader for the Layout image (handles "+" filename)
+  (function ensureLayoutImg(){
+    const img = document.getElementById('layoutImg');
+    if(!img) return;
+    const encoded = "Layout%20%2B%20Name.png";
+    const literal = "Layout + Name.png";
+    // If encoded fails (404), fallback to literal
+    img.addEventListener('error', function onErr(){
+      if(img.src.includes(encodeURI(encoded))) {
+        img.removeEventListener('error', onErr);
+        img.src = literal + "?v=1"; // cache-bust
       }
     });
+    // If someone renamed the file later (e.g., Layout-Name.png), update here.
+  })();
 
-    // Lazy loaders
-    let loaded={finder:false,layout:false};
-    function lazyLoad(which){
-      if(loaded[which]) return;
-      if(which==='finder'){
-        const f=document.getElementById('finderFrame');
-        if(f && !f.src) f.src=f.dataset.src;
-      }
-      if(which==='layout'){
-        const img=document.getElementById('layoutImg');
-        if(img && !img.src) img.src="Layout + Name.png"; // URL-encoded filename
-      }
-      loaded[which]=true;
-    }
-
-    // Deep-link: #map / #vow / #dinner / #finder / #layout
-    const hash = location.hash.replace('#','');
-    const ids = { map:'acc-map', vow:'acc-vow', dinner:'acc-dinner' };
-    if (ids[hash]) {
-      const el = document.getElementById(ids[hash]);
-      if (el && !el.open) el.open = true;
-      setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}), 60);
-    }
-    if (['finder','layout'].includes(hash)) {
-      const el = document.getElementById('acc-dinner');
-      if (!el.open) el.open = true;
-      setTimeout(()=>{ switchTab(hash); el.scrollIntoView({behavior:'smooth'}); }, 80);
-    }
-  </script>
+  // Deep-link: #map / #vow / #dinner / #finder / #layout
+  const hash = location.hash.replace('#','');
+  const ids = { map:'acc-map', vow:'acc-vow', dinner:'acc-dinner' };
+  if (ids[hash]) {
+    const el = document.getElementById(ids[hash]);
+    if (el && !el.open) el.open = true;
+    setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}), 60);
+  }
+  if (['finder','layout'].includes(hash)) {
+    const el = document.getElementById('acc-dinner');
+    if (!el.open) el.open = true;
+    setTimeout(()=>{ switchTab(hash); el.scrollIntoView({behavior:'smooth'}); }, 80);
+  }
+</script>
 </body>
 </html>
+
 
