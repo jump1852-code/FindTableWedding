@@ -22,36 +22,74 @@
       rel="stylesheet"
     />
 
-    <!-- Inline theme tokens + helper utility classes -->
+    <!-- Inline theme tokens + helper utility classes to mimic your Tailwind theme -->
     <style>
       :root {
+        /* Wedding Theme Colors (from your globals.css) */
         --wedding-cream: oklch(0.97 0.01 85);
         --wedding-sage: oklch(0.65 0.04 145);
         --wedding-forest: oklch(0.35 0.05 150);
         --wedding-blush: oklch(0.85 0.05 25);
+
+        /* Base Colors (from your globals.css) */
         --background: oklch(0.99 0.005 85);
         --foreground: oklch(0.35 0.05 150);
         --border: oklch(0.88 0.02 145);
       }
-      .font-serif { font-family: "Playfair Display", serif; }
-      .text-wedding-forest { color: var(--wedding-forest); }
-      .text-wedding-sage { color: var(--wedding-sage); }
-      .bg-wedding-cream { background-color: var(--wedding-cream); }
+
+      /* Make Tailwind's font-serif actually be Playfair like your app */
+      .font-serif {
+        font-family: "Playfair Display", serif;
+      }
+
+      /* Color helper classes to emulate your custom tokens */
+      .text-wedding-forest {
+        color: var(--wedding-forest);
+      }
+      .text-wedding-sage {
+        color: var(--wedding-sage);
+      }
+      .bg-wedding-cream {
+        background-color: var(--wedding-cream);
+      }
       .bg-wedding-cream-95 {
-        background-color: color-mix(in oklab, var(--wedding-cream) 95%, transparent);
+        background-color: color-mix(
+          in oklab,
+          var(--wedding-cream) 95%,
+          transparent
+        );
       }
       .bg-wedding-sage-20 {
-        background-color: color-mix(in oklab, var(--wedding-sage) 20%, transparent);
+        background-color: color-mix(
+          in oklab,
+          var(--wedding-sage) 20%,
+          transparent
+        );
       }
       .border-wedding-sage-20 {
         border-color: color-mix(in oklab, var(--wedding-sage) 20%, transparent);
       }
-      body { background: var(--background); color: var(--foreground); }
-      @supports not (background: color-mix(in oklab, red 50%, white)) {
-        .bg-wedding-cream-95 { background-color: rgba(247, 246, 242, 0.95); }
-        .bg-wedding-sage-20 { background-color: rgba(100, 133, 117, 0.2); }
-        .border-wedding-sage-20 { border-color: rgba(100, 133, 117, 0.2); }
+
+      /* Base background/foreground */
+      body {
+        background: var(--background);
+        color: var(--foreground);
       }
+
+      /* Fallback for browsers without color-mix: */
+      @supports not (background: color-mix(in oklab, red 50%, white)) {
+        .bg-wedding-cream-95 {
+          background-color: rgba(247, 246, 242, 0.95);
+        }
+        .bg-wedding-sage-20 {
+          background-color: rgba(100, 133, 117, 0.2);
+        }
+        .border-wedding-sage-20 {
+          border-color: rgba(100, 133, 117, 0.2);
+        }
+      }
+
+      /* Nice select caret */
       select {
         background-image: linear-gradient(45deg, transparent 50%, #6b7280 50%),
           linear-gradient(135deg, #6b7280 50%, transparent 50%),
@@ -60,16 +98,28 @@
           calc(100% - 13px) calc(1em + 2px), calc(100% - 2.5rem) 0.5rem;
         background-size: 5px 5px, 5px 5px, 1px 1.5rem;
         background-repeat: no-repeat;
-        -webkit-appearance: none; -moz-appearance: none; appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
       }
-      .glass { backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+
+      /* Subtle glass effect on the form card */
+      .glass {
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+      }
     </style>
   </head>
 
   <body class="antialiased">
     <!-- Background image + gradient overlay -->
     <div class="min-h-screen relative overflow-hidden">
-      <div id="bg" class="absolute inset-0 bg-cover bg-center bg-no-repeat"></div>
+      <div
+        id="bg"
+        class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+      ></div>
+
+      <!-- Gradient overlay: left opaque -> right transparent -->
       <div
         class="absolute inset-0"
         id="overlay"
@@ -91,7 +141,9 @@
           <div class="max-w-md lg:max-w-lg">
             <!-- Heading -->
             <header class="mb-8 md:mb-12">
-              <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-balance mb-3 text-wedding-forest">
+              <h1
+                class="font-serif text-4xl md:text-5xl lg:text-6xl text-balance mb-3 text-wedding-forest"
+              >
                 ผังโต้ะจีน
               </h1>
               <p class="text-lg md:text-xl text-wedding-sage leading-relaxed">
@@ -100,12 +152,19 @@
             </header>
 
             <!-- Card -->
-            <section id="card" class="bg-wedding-cream-95 glass rounded-2xl p-6 md:p-8 shadow-2xl border border-wedding-sage-20">
+            <section
+              id="card"
+              class="bg-wedding-cream-95 glass rounded-2xl p-6 md:p-8 shadow-2xl border border-wedding-sage-20"
+            >
               <!-- Search Form -->
               <div id="form-view" class="space-y-6">
                 <!-- ฝั่ง -->
                 <div class="space-y-2">
-                  <label for="side" class="block text-base md:text-lg font-medium text-wedding-forest">แขกฝั่ง</label>
+                  <label
+                    for="side"
+                    class="block text-base md:text-lg font-medium text-wedding-forest"
+                    >แขกฝั่ง</label
+                  >
                   <select
                     id="side"
                     class="w-full bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[color:oklch(0.65_0.04_145)] rounded-lg px-4 py-3 text-[16px] text-wedding-forest"
@@ -118,39 +177,73 @@
 
                 <!-- ความสัมพันธ์ -->
                 <div class="space-y-2">
-                  <label for="relationship" class="block text-base md:text-lg font-medium text-wedding-forest">ความสัมพันธ์</label>
+                  <label
+                    for="relationship"
+                    class="block text-base md:text-lg font-medium text-wedding-forest"
+                    >ความสัมพันธ์</label
+                  >
                   <select
                     id="relationship"
                     class="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-[16px] text-wedding-forest disabled:opacity-50"
                     disabled
                   >
-                    <option value="">กรุณาเลือกฝั่งก่อน</option>
+                    <option value="">
+                      กรุณาเลือกฝั่งก่อน
+                    </option>
                   </select>
                 </div>
 
-                <!-- (detail1/detail2 เผื่ออนาคต: ซ่อนไว้) -->
+                <!-- ขยายความ 1 -->
                 <div id="detail1-wrap" class="space-y-2 hidden">
-                  <label for="detail1" class="block text-base md:text-lg font-medium text-wedding-forest">ขยายความ 1</label>
-                  <select id="detail1" class="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-[16px] text-wedding-forest disabled:opacity-50" disabled>
-                    <option value="">กรุณาเลือกความสัมพันธ์ก่อน</option>
+                  <label
+                    for="detail1"
+                    class="block text-base md:text-lg font-medium text-wedding-forest"
+                    >ขยายความ 1</label
+                  >
+                  <select
+                    id="detail1"
+                    class="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-[16px] text-wedding-forest disabled:opacity-50"
+                    disabled
+                  >
+                    <option value="">
+                      กรุณาเลือกความสัมพันธ์ก่อน
+                    </option>
                   </select>
                 </div>
+
+                <!-- ขยายความ 2 -->
                 <div id="detail2-wrap" class="space-y-2 hidden">
-                  <label for="detail2" class="block text-base md:text-lg font-medium text-wedding-forest">ขยายความ 2</label>
-                  <select id="detail2" class="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-[16px] text-wedding-forest disabled:opacity-50" disabled>
-                    <option value="">กรุณาเลือกขยายความ 1 ก่อน</option>
+                  <label
+                    for="detail2"
+                    class="block text-base md:text-lg font-medium text-wedding-forest"
+                    >ขยายความ 2</label
+                  >
+                  <select
+                    id="detail2"
+                    class="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-[16px] text-wedding-forest disabled:opacity-50"
+                    disabled
+                  >
+                    <option value="">
+                      กรุณาเลือกขยายความ 1 ก่อน
+                    </option>
                   </select>
                 </div>
 
                 <!-- รายชื่อ -->
                 <div class="space-y-2">
-                  <label for="guest" class="block text-base md:text-lg font-medium text-wedding-forest">รายชื่อและผู้ติดตาม</label>
+                  <label
+                    for="guest"
+                    class="block text-base md:text-lg font-medium text-wedding-forest"
+                    >รายชื่อและผู้ติดตาม</label
+                  >
                   <select
                     id="guest"
                     class="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-[16px] text-wedding-forest disabled:opacity-50"
                     disabled
                   >
-                    <option value="">กรุณาเลือกความสัมพันธ์ก่อน</option>
+                    <option value="">
+                      กรุณาเลือกความสัมพันธ์ก่อน
+                    </option>
                   </select>
                 </div>
 
@@ -167,24 +260,47 @@
               <!-- Result View -->
               <div id="result-view" class="space-y-6 text-center hidden">
                 <div class="space-y-4">
-                  <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-wedding-sage-20 mb-2">
+                  <div
+                    class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-wedding-sage-20 mb-2"
+                  >
                     <span class="text-3xl">✓</span>
                   </div>
-                  <h2 class="font-serif text-2xl md:text-3xl text-wedding-forest">พบข้อมูลของคุณแล้ว!</h2>
+                  <h2
+                    class="font-serif text-2xl md:text-3xl text-wedding-forest"
+                  >
+                    พบข้อมูลของคุณแล้ว!
+                  </h2>
                 </div>
 
                 <div class="space-y-4 py-6">
-                  <div class="bg-white/60 rounded-xl p-6 border border-wedding-sage-20">
+                  <div
+                    class="bg-white/60 rounded-xl p-6 border border-wedding-sage-20"
+                  >
                     <p class="text-sm text-wedding-sage mb-2">จำนวนแขก</p>
-                    <p id="result-guestCount" class="text-4xl md:text-5xl font-serif text-wedding-forest">–</p>
+                    <p
+                      id="result-guestCount"
+                      class="text-4xl md:text-5xl font-serif text-wedding-forest"
+                    >
+                      –
+                    </p>
                   </div>
-                  <div class="bg-white/60 rounded-xl p-6 border border-wedding-sage-20">
+                  <div
+                    class="bg-white/60 rounded-xl p-6 border border-wedding-sage-20"
+                  >
                     <p class="text-sm text-wedding-sage mb-2">เบอร์โต้ะ</p>
-                    <p id="result-tableNumber" class="text-4xl md:text-5xl font-serif text-wedding-forest">–</p>
+                    <p
+                      id="result-tableNumber"
+                      class="text-4xl md:text-5xl font-serif text-wedding-forest"
+                    >
+                      –
+                    </p>
                   </div>
                 </div>
 
-                <button id="resetBtn" class="w-full border border-wedding-sage-20 text-wedding-forest hover:bg-black/5 text-base py-4 rounded-xl bg-transparent">
+                <button
+                  id="resetBtn"
+                  class="w-full border border-wedding-sage-20 text-wedding-forest hover:bg-black/5 text-base py-4 rounded-xl bg-transparent"
+                >
                   ค้นหาอีกครั้ง
                 </button>
               </div>
@@ -199,102 +315,858 @@
       const BACKGROUND_URL =
         "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/TableLayout-n8KYXBtDLSI4j0lnCSUPnPWUbgKstp.png";
 
-      // === DATA (normalized & confirmed) ===
+      // === DATA (embedded from your guest-data.ts) ===
       /**
        * @typedef {Object} Guest
        * @property {string} side
-       * @property {string} relationship   // ถ้าไม่กำหนด จะถือว่า "ไม่ระบุ"
+       * @property {string} relationship
+       * @property {string} detail1
+       * @property {string} detail2
+       * @property {string} tableGroup
        * @property {string} name
        * @property {number} guestCount
        * @property {number} tableNumber
        */
+
       /** @type {Guest[]} */
       const guestData = [
-        { side: 'เจ้าสาว', relationship: '', name: 'ชัญญา สาทิตานนท์(เฟ) Bridesmaids', guestCount: 1, tableNumber: 1 },
-        { side: 'เจ้าสาว', relationship: '', name: 'กฤชอร ปองเสงี่ยม (มู่หลาน) Bridesmaids', guestCount: 1, tableNumber: 1 },
-        { side: 'เจ้าสาว', relationship: '', name: 'กมลวรรณ เจริญเรืองทรัพย์ (ต้นหลิว) Bridesmaids', guestCount: 1, tableNumber: 1 },
-        { side: 'เจ้าสาว', relationship: '', name: 'นางสาวสุชัญญา ศรีวารี (ใบพลู) Bridesmaids', guestCount: 1, tableNumber: 1 },
-        { side: 'เจ้าสาว', relationship: 'ญาติแม่เจ้าสาว', name: 'เฟิน เมทินี เตชะอภัยคุณ (เฟิน)', guestCount: 3, tableNumber: 1 },
-        { side: 'เจ้าสาว', relationship: 'ญาติแม่เจ้าสาว', name: 'ยี่กู๋ (กรียาพัตร์ เตชะอภัยคุณ (น้อย))', guestCount: 3, tableNumber: 1 },
-        { side: 'เจ้าสาว', relationship: 'ญาติแม่เจ้าสาว', name: 'ตั่วกู๋และภรรยา', guestCount: 2, tableNumber: 2 },
-        { side: 'เจ้าสาว', relationship: 'ญาติแม่เจ้าสาว', name: 'พี่ติ้กและสามี', guestCount: 4, tableNumber: 2 },
-        { side: 'เจ้าสาว', relationship: 'ญาติแม่เจ้าสาว', name: 'พี่ตั้กและสามี', guestCount: 4, tableNumber: 2 },
-        { side: 'เจ้าสาว', relationship: '', name: 'พี่บิ๊ก ผอ.สนผ. SEPO', guestCount: 1, tableNumber: 3 },
-        { side: 'เจ้าสาว', relationship: '', name: 'พี่กุ้ง ชช. สนผ. SEPO', guestCount: 1, tableNumber: 3 },
-        { side: 'เจ้าสาว', relationship: '', name: 'พี่ปุ๊ก ที่ปรึกษาด้านพัฒนารัฐวิสาหกิจ SEPO', guestCount: 1, tableNumber: 3 },
-        { side: 'เจ้าสาว', relationship: '', name: 'พี่นก C8 SEPO', guestCount: 1, tableNumber: 3 },
-        { side: 'เจ้าสาว', relationship: '', name: 'พี่โย C8 SEPO', guestCount: 1, tableNumber: 3 },
-        { side: 'เจ้าสาว', relationship: '', name: 'พี่ผึ้ง C8 หัวหน้าเจ้าสาว SEPO', guestCount: 1, tableNumber: 3 },
-        { side: 'เจ้าบ่าว', relationship: '', name: 'คุณ ฉัตรชัย ศิริไล ธ.ก.ส.', guestCount: 1, tableNumber: 3 },
-        { side: 'เจ้าบ่าว', relationship: 'เพื่อนแม่เจ้าบ่าว', name: 'พิษณุพร ขาวประเสริฐ', guestCount: 1, tableNumber: 3 },
-        { side: 'เจ้าบ่าว', relationship: 'เพื่อนแม่เจ้าบ่าว', name: 'อภิรัตน์ ตันติเวชกุบ (เอ๋)', guestCount: 2, tableNumber: 3 },
-        { side: 'เจ้าสาว', relationship: '', name: 'อีฟ KU', guestCount: 2, tableNumber: 4 },
-        { side: 'เจ้าสาว', relationship: '', name: 'พัชราภรณ์ พิมพ์สุวรรณ์ (ปุ๋มปิ๋ม) KU', guestCount: 2, tableNumber: 4 },
-        { side: 'เจ้าสาว', relationship: '', name: 'ปาณิศา ณรงค์ราช (มายด์) KU', guestCount: 2, tableNumber: 4 },
-        { side: 'เจ้าสาว', relationship: '', name: 'หมูเล้ก KU', guestCount: 1, tableNumber: 4 },
-        { side: 'เจ้าสาว', relationship: '', name: 'ฝ้าย KU', guestCount: 1, tableNumber: 4 },
-        { side: 'เจ้าสาว', relationship: '', name: 'แตงกวา KU', guestCount: 1, tableNumber: 4 },
-        { side: 'เจ้าสาว', relationship: 'ญาติแม่เจ้าสาว', name: 'พี่ตั้มและแฟน', guestCount: 2, tableNumber: 5 },
-        { side: 'เจ้าสาว', relationship: 'ญาติแม่เจ้าสาว', name: 'โซยอี้', guestCount: 2, tableNumber: 5 },
-        { side: 'เจ้าสาว', relationship: 'ญาติแม่เจ้าสาว', name: 'ยี่อี้', guestCount: 2, tableNumber: 5 },
-        { side: 'เจ้าสาว', relationship: 'เพื่อนแม่เจ้าสาว', name: 'น้าวิ', guestCount: 1, tableNumber: 5 },
-        { side: 'เจ้าสาว', relationship: 'เพื่อนแม่เจ้าสาว', name: 'มาริสา กรุณานนท์', guestCount: 1, tableNumber: 5 },
-        { side: 'เจ้าสาว', relationship: 'เพื่อนแม่เจ้าสาว', name: 'น้ากบ', guestCount: 1, tableNumber: 5 },
-        { side: 'เจ้าสาว', relationship: 'เพื่อนแม่เจ้าสาว', name: 'น้าฝน', guestCount: 1, tableNumber: 5 },
-        { side: 'เจ้าสาว', relationship: 'ญาติพ่อเจ้าสาว', name: 'ซาโกว', guestCount: 1, tableNumber: 6 },
-        { side: 'เจ้าสาว', relationship: 'ญาติพ่อเจ้าสาว', name: 'โกนี', guestCount: 1, tableNumber: 6 },
-        { side: 'เจ้าสาว', relationship: 'ญาติพ่อเจ้าสาว', name: 'โกแมว', guestCount: 1, tableNumber: 6 },
-        { side: 'เจ้าสาว', relationship: 'ญาติพ่อเจ้าสาว', name: 'น้องหลิว', guestCount: 1, tableNumber: 6 },
-        { side: 'เจ้าสาว', relationship: '', name: 'ครอบครัวเจ้าสาว', guestCount: 4, tableNumber: 6 },
-        { side: 'เจ้าบ่าว', relationship: 'พ่อแม่เจ้าบ่าว', name: 'ไลวรรณ ปองเสงี่ยม (พ่อ + แม่)', guestCount: 2, tableNumber: 6 },
-        { side: 'เจ้าบ่าว', relationship: 'ญาติพ่อเจ้าบ่าว', name: 'โกวเล็ก (รถเข็น 1 ท่าน)', guestCount: 4, tableNumber: 7 },
-        { side: 'เจ้าบ่าว', relationship: 'ญาติพ่อเจ้าบ่าว', name: 'แปะฮ้วด', guestCount: 2, tableNumber: 7 },
-        { side: 'เจ้าบ่าว', relationship: 'ญาติพ่อเจ้าบ่าว', name: 'พี่โจ้ ปองเสงี่ยม', guestCount: 4, tableNumber: 7 },
-        { side: 'เจ้าสาว', relationship: 'ญาติแม่เจ้าสาว', name: 'โซ้ยกู๋', guestCount: 2, tableNumber: 8 },
-        { side: 'เจ้าสาว', relationship: 'ญาติแม่เจ้าสาว', name: 'ฐิติภูมิ เตชะอภัยคุณ (นิว)', guestCount: 1, tableNumber: 8 },
-        { side: 'เจ้าสาว', relationship: 'ญาติแม่เจ้าสาว', name: 'คงกฤษ เตชะอภัยคุณ (แม็ก)', guestCount: 1, tableNumber: 8 },
-        { side: 'เจ้าบ่าว', relationship: 'ญาติแม่เจ้าบ่าว', name: 'M', guestCount: 2, tableNumber: 8 },
-        { side: 'เจ้าบ่าว', relationship: 'ญาติแม่เจ้าบ่าว', name: 'ภาวิณี นภาพงษ์จันทรา (หลิ่นตี๊)', guestCount: 2, tableNumber: 8 },
-        { side: 'เจ้าบ่าว', relationship: 'ญาติแม่เจ้าบ่าว', name: 'ชัยวัต + ครอบครัว หาดใหญ่', guestCount: 2, tableNumber: 8 },
-        { side: 'เจ้าบ่าว', relationship: '', name: 'พดน ชินพิพัฒน์ (บูม) CityU', guestCount: 1, tableNumber: 9 },
-        { side: 'เจ้าบ่าว', relationship: '', name: 'วรวัชร สุขเกื้อ (Bolt) CityU', guestCount: 2, tableNumber: 9 },
-        { side: 'เจ้าสาว', relationship: '', name: 'ป่าน+แตงกวา Reading', guestCount: 2, tableNumber: 9 },
-        { side: 'เจ้าสาว', relationship: '', name: 'พี่ดราฟ SEPO', guestCount: 1, tableNumber: 9 },
-        { side: 'เจ้าสาว', relationship: '', name: 'พี่หนึ่ง SEPO', guestCount: 1, tableNumber: 9 },
-        { side: 'เจ้าสาว', relationship: '', name: 'เจ้แอม+สามี Reading', guestCount: 2, tableNumber: 9 },
-        { side: 'เจ้าบ่าว', relationship: 'ญาติพ่อเจ้าบ่าว', name: 'วิวัฒน์ ปองเสงี่ยม', guestCount: 3, tableNumber: 10 },
-        { side: 'เจ้าบ่าว', relationship: 'พี่น้องเจ้าบ่าว', name: 'แจน พี่สาวจ้ำ', guestCount: 2, tableNumber: 10 },
-        { side: 'เจ้าบ่าว', relationship: 'ญาติพ่อเจ้าบ่าว', name: 'ยุพดี ปองเสงี่ยม', guestCount: 4, tableNumber: 10 },
-        { side: 'เจ้าบ่าว', relationship: '', name: 'Gorn SIIT', guestCount: 2, tableNumber: 11 },
-        { side: 'เจ้าบ่าว', relationship: '', name: 'โจ๋สุดหล่อ SIIT', guestCount: 2, tableNumber: 11 },
-        { side: 'เจ้าบ่าว', relationship: '', name: 'เตชนิธิ SIIT', guestCount: 2, tableNumber: 11 },
-        { side: 'เจ้าบ่าว', relationship: '', name: 'ภูวิช แอน SIIT', guestCount: 2, tableNumber: 11 },
-        { side: 'เจ้าบ่าว', relationship: '', name: 'อิทธิพัทธ์ คำพา (เต้ย) SIIT', guestCount: 2, tableNumber: 11 },
-        { side: 'เจ้าบ่าว', relationship: '', name: 'พลอานันต์ จองลิขิต (นีโน่) SIIT', guestCount: 1, tableNumber: 12 },
-        { side: 'เจ้าบ่าว', relationship: '', name: 'อาร์ท SIIT', guestCount: 1, tableNumber: 12 },
-        { side: 'เจ้าสาว', relationship: '', name: 'แอลลี่ SJB', guestCount: 1, tableNumber: 12 },
-        { side: 'เจ้าสาว', relationship: '', name: 'ณัฐพร ลิ้มตระกูลชัย (แนน) FWD', guestCount: 1, tableNumber: 12 },
-        { side: 'เจ้าบ่าว', relationship: '', name: 'Oil ออย SIIT', guestCount: 2, tableNumber: 12 },
-        { side: 'เจ้าบ่าว', relationship: '', name: 'ชมพูนุท ปลื้มจิต -ชมพู่ SIIT', guestCount: 2, tableNumber: 12 },
-        { side: 'เจ้าบ่าว', relationship: '', name: 'วุ้น SIIT', guestCount: 2, tableNumber: 12 },
-        { side: 'เจ้าบ่าว', relationship: 'ญาติแม่เจ้าบ่าว', name: 'สมพจน์ (เหว่งซก) และครอบครัว', guestCount: 2, tableNumber: 13 },
-        { side: 'เจ้าบ่าว', relationship: 'ญาติแม่เจ้าบ่าว', name: 'ธนพร พงศ์พิศิษฎ์สกุล (หงี่กู)', guestCount: 1, tableNumber: 13 },
-        { side: 'เจ้าบ่าว', relationship: 'ญาติแม่เจ้าบ่าว', name: 'วาศิณี พงศ์พิศิษฎ์สกุล (อี๊ส้ม)', guestCount: 1, tableNumber: 13 },
-        { side: 'เจ้าบ่าว', relationship: 'ญาติแม่เจ้าบ่าว', name: 'นวรัตน์ พงศ์พิศิษฎ์สกุล (รัตน์, หม่าม้า)', guestCount: 2, tableNumber: 13 },
-        { side: 'เจ้าบ่าว', relationship: 'ญาติแม่เจ้าบ่าว', name: 'นภาพร แก่นเพิ่ม (พี่กุ้ง และครอบครัว)', guestCount: 4, tableNumber: 13 },
-        { side: 'เจ้าบ่าว', relationship: 'เพื่อนพ่อเจ้าบ่าว', name: 'นาย สุวิทย์ ขจรเดชากุล', guestCount: 1, tableNumber: 14 },
-        { side: 'เจ้าบ่าว', relationship: 'เพื่อนพ่อเจ้าบ่าว', name: 'พรชัย ปิ่นทอง', guestCount: 1, tableNumber: 14 },
-        { side: 'เจ้าบ่าว', relationship: 'เพื่อนพ่อเจ้าบ่าว', name: 'พล.อ.โกญจนาท ศุกระเศรณี', guestCount: 1, tableNumber: 14 },
-        { side: 'เจ้าบ่าว', relationship: 'เพื่อนพ่อเจ้าบ่าว', name: 'นายริทัศน์ ศรีทะวงศ์', guestCount: 2, tableNumber: 14 },
-        { side: 'เจ้าบ่าว', relationship: '', name: 'พี่ๆ Dextra Holding Services', guestCount: 5, tableNumber: 14 },
-        { side: 'เจ้าสาว', relationship: '', name: 'แตมป์ CPALL', guestCount: 1, tableNumber: 15 },
-        { side: 'เจ้าสาว', relationship: '', name: 'โบ CPALL', guestCount: 1, tableNumber: 15 },
-        { side: 'เจ้าสาว', relationship: '', name: 'เอิร์ท CPALL', guestCount: 1, tableNumber: 15 },
-        { side: 'เจ้าสาว', relationship: '', name: 'วี่ CPALL', guestCount: 1, tableNumber: 15 },
-        { side: 'เจ้าบ่าว', relationship: 'เจ Jaspal', name: 'ชนก อำไพ', guestCount: 1, tableNumber: 15 },
-        { side: 'เจ้าบ่าว', relationship: 'ตั้ม Jaspal', name: 'อธิป เก้าเด่น', guestCount: 1, tableNumber: 15 },
-        { side: 'เจ้าบ่าว', relationship: 'Bank Jaspal', name: 'Chokchai Thawatcharaporn', guestCount: 2, tableNumber: 15 },
-        { side: 'เจ้าบ่าว', relationship: 'พี่ต้ะ Jaspal', name: 'พิทักษ์สิน สมวงศ์(ต๊ะ)', guestCount: 2, tableNumber: 15 },
+        {
+          side: "เจ้าสาว",
+          relationship: "SEPO - MOF",
+          detail1: "น้องๆ Bridesmates <3",
+          tableGroup: "Mix Master + Bridesmates",
+          name: "ชัญญา สาทิตานนท์(เฟ) Bridesmates",
+          guestCount: 1,
+          tableNumber: 1,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "SEPO - MOF",
+          detail1: "น้องๆ Bridesmates <3",
+          tableGroup: "Mix Master + Bridesmates",
+          name: "กฤชอร ปองเสงี่ยม (มู่หลาน) Bridesmates",
+          guestCount: 1,
+          tableNumber: 1,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "SEPO - MOF",
+          detail1: "น้องๆ Bridesmates <3",
+          tableGroup: "Mix Master + Bridesmates",
+          name: "กมลวรรณ เจริญเรืองทรัพย์ (ต้นหลิว) Bridesmates",
+          guestCount: 1,
+          tableNumber: 1,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "SEPO - MOF",
+          detail1: "น้องๆ Bridesmates <3",
+          tableGroup: "Mix Master + Bridesmates",
+          name: "นางสาวสุชัญญา ศรีวารี (ใบพลู) Bridesmates",
+          guestCount: 1,
+          tableNumber: 1,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "เพื่อนบ่าวสาว",
+          detail1: "จากที่เรียน",
+          detail2: "Master - CityU",
+          tableGroup: "Mix Master + Bridesmates",
+          name: "พดน ชินพิพัฒน์ (บูม) CityU",
+          guestCount: 1,
+          tableNumber: 1,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "เพื่อนบ่าวสาว",
+          detail1: "จากที่เรียน",
+          detail2: "Master - CityU",
+          tableGroup: "Mix Master + Bridesmates",
+          name: "วรวัชร สุขเกื้อ (Bolt) CityU",
+          guestCount: 2,
+          tableNumber: 1,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "เพื่อนบ่าวสาว",
+          detail1: "จากที่เรียน",
+          detail2: "Master - Reading",
+          tableGroup: "Mix Master + Bridesmates",
+          name: "ป่าน+แตงกวา　Reading",
+          guestCount: 2,
+          tableNumber: 1,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "ญาติพี่น้อง",
+          detail1: "ญาติๆ ฝั่งแม่",
+          detail2: "",
+          tableGroup: "Ice Mom Relative　１",
+          name: "ตั่วกู๋และภรรยา - ญาติแม่เจ้าสาว",
+          guestCount: 2,
+          tableNumber: 2,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "ญาติพี่น้อง",
+          detail1: "ญาติๆ ฝั่งแม่",
+          detail2: "",
+          tableGroup: "Ice Mom Relative　１",
+          name: "พี่ติ้กและสามี - ญาติแม่เจ้าสาว",
+          guestCount: 4,
+          tableNumber: 2,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "ญาติพี่น้อง",
+          detail1: "ญาติๆ ฝั่งแม่",
+          detail2: "",
+          tableGroup: "Ice Mom Relative　１",
+          name: "พี่ตั้กและสามี - ญาติแม่เจ้าสาว",
+          guestCount: 4,
+          tableNumber: 2,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "SEPO - MOF",
+          detail1: "พี่ สนผ.",
+          tableGroup: "Ice SEPO (VIP)",
+          name: "พี่ดราฟ SEPO",
+          guestCount: 1,
+          tableNumber: 3,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "SEPO - MOF",
+          detail1: "พี่ สนผ.",
+          tableGroup: "Ice SEPO (VIP)",
+          name: "พี่หนึ่ง SEPO",
+          guestCount: 1,
+          tableNumber: 3,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "SEPO - MOF",
+          detail1: "พี่ สนผ.",
+          tableGroup: "Ice SEPO (VIP)",
+          name: "ผอ.สนผ. พี่บิ๊ก SEPO",
+          guestCount: 1,
+          tableNumber: 3,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "SEPO - MOF",
+          detail1: "พี่ สนผ.",
+          tableGroup: "Ice SEPO (VIP)",
+          name: "ผู้เชี่ยวชาญ พี่กุ้ง  SEPO",
+          guestCount: 1,
+          tableNumber: 3,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "SEPO - MOF",
+          detail1: "พี่ สนผ.",
+          tableGroup: "Ice SEPO (VIP)",
+          name: "ที่ปรึกษาด้านพัฒนารัฐวิสาหกิจ พี่ปุ๊ก SEPO",
+          guestCount: 1,
+          tableNumber: 3,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "SEPO - MOF",
+          detail1: "พี่ สนผ.",
+          tableGroup: "Ice SEPO (VIP)",
+          name: "C8 พี่นก SEPO",
+          guestCount: 1,
+          tableNumber: 3,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "SEPO - MOF",
+          detail1: "พี่ สนผ.",
+          tableGroup: "Ice SEPO (VIP)",
+          name: "C8 พี่โย SEPO",
+          guestCount: 1,
+          tableNumber: 3,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "SEPO - MOF",
+          detail1: "พี่ สนผ.",
+          tableGroup: "Ice SEPO (VIP)",
+          name: "C8 หัวหน้าเจ้าสาว พี่ผึ้ง SEPO",
+          guestCount: 1,
+          tableNumber: 3,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "SEPO - MOF",
+          detail1: "พี่ สนผ.",
+          tableGroup: "Ice SEPO (VIP)",
+          name: "C8 พี่อิ่ม SEPO",
+          guestCount: 1,
+          tableNumber: 3,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "เพื่อนพ่อ เพื่อนแม่บ่าวสาว",
+          detail1: "เพื่อนๆ ฝั่งแม่",
+          detail2: "",
+          tableGroup: "Ice SEPO (VIP)",
+          name: "กรรมการและเลขานุการ คุณ ฉัตรชัย ศิริไล ธ.ก.ส.",
+          guestCount: 1,
+          tableNumber: 3,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "เพื่อนบ่าวสาว",
+          detail1: "จากที่เรียน",
+          detail2: "Bachelor - Kaset",
+          tableGroup: "Ice KU",
+          name: "อีฟ KU",
+          guestCount: 2,
+          tableNumber: 4,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "เพื่อนบ่าวสาว",
+          detail1: "จากที่เรียน",
+          detail2: "Bachelor - Kaset",
+          tableGroup: "Ice KU",
+          name: "พัชราภรณ์  พิมพ์สุวรรณ์ (ปุ๋มปิ๋ม) KU",
+          guestCount: 2,
+          tableNumber: 4,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "เพื่อนบ่าวสาว",
+          detail1: "จากที่เรียน",
+          detail2: "Bachelor - Kaset",
+          tableGroup: "Ice KU",
+          name: "ปาณิศา ณรงค์ราช (มายด์) KU",
+          guestCount: 2,
+          tableNumber: 4,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "เพื่อนบ่าวสาว",
+          detail1: "จากที่เรียน",
+          detail2: "Bachelor - Kaset",
+          tableGroup: "Ice KU",
+          name: "หมูเล้ก KU",
+          guestCount: 1,
+          tableNumber: 4,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "เพื่อนบ่าวสาว",
+          detail1: "จากที่เรียน",
+          detail2: "Bachelor - Kaset",
+          tableGroup: "Ice KU",
+          name: "ฝ้าย  KU",
+          guestCount: 1,
+          tableNumber: 4,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "เพื่อนบ่าวสาว",
+          detail1: "จากที่เรียน",
+          detail2: "Bachelor - Kaset",
+          tableGroup: "Ice KU",
+          name: "แตงกวา KU",
+          guestCount: 1,
+          tableNumber: 4,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "ญาติพี่น้อง",
+          detail1: "ญาติๆ ฝั่งแม่",
+          detail2: "",
+          tableGroup: "Ice Mom Relative　２",
+          name: "พี่ตั้มและแฟน - ญาติแม่เจ้าสาว",
+          guestCount: 2,
+          tableNumber: 5,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "ญาติพี่น้อง",
+          detail1: "ญาติๆ ฝั่งแม่",
+          detail2: "",
+          tableGroup: "Ice Mom Relative　２",
+          name: "โซ้้ยอี๋ - ญาติแม่เจ้าสาว",
+          guestCount: 3,
+          tableNumber: 5,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "ญาติพี่น้อง",
+          detail1: "ญาติๆ ฝั่งแม่",
+          detail2: "",
+          tableGroup: "Ice Mom Relative　２",
+          name: "ยี่อี้ - ญาติแม่เจ้าสาว",
+          guestCount: 2,
+          tableNumber: 5,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "ญาติพี่น้อง",
+          detail1: "ญาติๆ ฝั่งแม่",
+          detail2: "",
+          tableGroup: "Ice Mom Relative　２",
+          name: "เฟิน เมทินี เตชะอภัยคุณ ( เฟิน ) - ญาติแม่เจ้าสาว",
+          guestCount: 3,
+          tableNumber: 5,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "ญาติพี่น้อง",
+          detail1: "ญาติๆ ฝั่งพ่อ",
+          detail2: "",
+          tableGroup: "Ice Dad Relative ＋Fam",
+          name: "ซาโกว - ญาติพ่อเจ้าสาว",
+          guestCount: 1,
+          tableNumber: 6,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "ญาติพี่น้อง",
+          detail1: "ญาติๆ ฝั่งพ่อ",
+          detail2: "",
+          tableGroup: "Ice Dad Relative ＋Fam",
+          name: "โกนี - ญาติพ่อเจ้าสาว",
+          guestCount: 1,
+          tableNumber: 6,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "ญาติพี่น้อง",
+          detail1: "ญาติๆ ฝั่งพ่อ",
+          detail2: "",
+          tableGroup: "Ice Dad Relative ＋Fam",
+          name: "โกแมว - ญาติพ่อเจ้าสาว",
+          guestCount: 1,
+          tableNumber: 6,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "ญาติพี่น้อง",
+          detail1: "ญาติๆ ฝั่งพ่อ",
+          detail2: "",
+          tableGroup: "Ice Dad Relative ＋Fam",
+          name: "น้องหลิว - ญาติพ่อเจ้าสาว",
+          guestCount: 1,
+          tableNumber: 6,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "ครอบครัวบ่าวสาว",
+          detail1: "",
+          detail2: "",
+          tableGroup: "Ice Dad Relative ＋Fam",
+          name: "ครอบครัวเจ้าสาว",
+          guestCount: 4,
+          tableNumber: 6,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "ญาติพี่น้อง",
+          detail1: "ญาติๆ ฝั่งแม่",
+          detail2: "",
+          tableGroup: "Jumm Mom Relative 1",
+          name: "สมพจน์ (เหว่งซก) และครอบครัว - ญาติแม่เจ้าบ่าว",
+          guestCount: 2,
+          tableNumber: 7,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "ญาติพี่น้อง",
+          detail1: "ญาติๆ ฝั่งแม่",
+          detail2: "",
+          tableGroup: "Jumm Mom Relative 1",
+          name: "ธนพร พงศ์พิศิษฎ์สกุล (หงี่กู) - ญาติแม่เจ้าบ่าว",
+          guestCount: 1,
+          tableNumber: 7,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "ญาติพี่น้อง",
+          detail1: "ญาติๆ ฝั่งแม่",
+          detail2: "",
+          tableGroup: "Jumm Mom Relative 1",
+          name: "วาศิณี พงศ์พิศิษฎ์สกุล (อี๊ส้ม) - ญาติแม่เจ้าบ่าว",
+          guestCount: 1,
+          tableNumber: 7,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "ญาติพี่น้อง",
+          detail1: "ญาติๆ ฝั่งแม่",
+          detail2: "",
+          tableGroup: "Jumm Mom Relative 1",
+          name: "นวรัตน์ พงศ์พิศิษฎ์สกุล (รัตน์, หม่าม้า) - ญาติแม่เจ้าบ่าว",
+          guestCount: 2,
+          tableNumber: 7,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "ญาติพี่น้อง",
+          detail1: "ญาติๆ ฝั่งแม่",
+          detail2: "",
+          tableGroup: "Jumm Mom Relative 1",
+          name: "นภาพร แก่นเพิ่ม ( พี่กุ้ง และครอบครัว ) - ญาติแม่เจ้าบ่าว",
+          guestCount: 4,
+          tableNumber: 7,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "ญาติพี่น้อง",
+          detail1: "ญาติๆ ฝั่งแม่",
+          detail2: "",
+          tableGroup: "Mix Close Fam",
+          name: "โซ้ยกู๋ - ญาติแม่เจ้าสาว",
+          guestCount: 2,
+          tableNumber: 8,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "ญาติพี่น้อง",
+          detail1: "ญาติๆ ฝั่งแม่",
+          detail2: "",
+          tableGroup: "Mix Close Fam",
+          name: "ฐิติภูมิ เตชะอภัยคุณ (นิว) - ญาติแม่เจ้าสาว",
+          guestCount: 1,
+          tableNumber: 8,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "ญาติพี่น้อง",
+          detail1: "ญาติๆ ฝั่งแม่",
+          detail2: "",
+          tableGroup: "Mix Close Fam",
+          name: "คงกฤษ เตชะอภัยคุณ (แม็ก) - ญาติแม่เจ้าสาว",
+          guestCount: 1,
+          tableNumber: 8,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "ญาติพี่น้อง",
+          detail1: "ญาติๆ ฝั่งแม่",
+          detail2: "",
+          tableGroup: "Mix Close Fam",
+          name: "M - ญาติแม่เจ้าบ่าว",
+          guestCount: 2,
+          tableNumber: 8,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "ญาติพี่น้อง",
+          detail1: "ญาติๆ ฝั่งแม่",
+          detail2: "",
+          tableGroup: "Mix Close Fam",
+          name: "ภาวิณี นภาพงษ์จันทรา (หลิ่นตี๊)  - ญาติแม่เจ้าบ่าว",
+          guestCount: 2,
+          tableNumber: 8,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "เพื่อนบ่าวสาว",
+          detail1: "จากที่เรียน",
+          detail2: "Master - Reading",
+          tableGroup: "Mix Close Fam",
+          name: "เจ้แอม+สามี Reading",
+          guestCount: 2,
+          tableNumber: 8,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "ญาติพี่น้อง",
+          detail1: "ญาติๆ ฝั่งแม่",
+          detail2: "",
+          tableGroup: "Mix Parent Friend & Fam",
+          name: "ยี่กู๋ (กรียาพัตร์  เตชะอภัยคุณ  (น้อย)) - ญาติแม่เจ้าสาว",
+          guestCount: 3,
+          tableNumber: 9,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "ญาติพี่น้อง",
+          detail1: "ญาติๆ ฝั่งแม่",
+          detail2: "",
+          tableGroup: "Mix Parent Friend & Fam",
+          name: "ชัยวัต + ครอบครัว หาดใหญ๋  - ญาติแม่เจ้าบ่าว",
+          guestCount: 3,
+          tableNumber: 9,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "เพื่อนพ่อ เพื่อนแม่บ่าวสาว",
+          detail1: "เพื่อนๆ ฝั่งแม่",
+          detail2: "",
+          tableGroup: "Mix Parent Friend & Fam",
+          name: "น้าวิ - เพื่อนแม่เจ้าสาว",
+          guestCount: 1,
+          tableNumber: 9,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "เพื่อนพ่อ เพื่อนแม่บ่าวสาว",
+          detail1: "เพื่อนๆ ฝั่งแม่",
+          detail2: "",
+          tableGroup: "Mix Parent Friend & Fam",
+          name: "มาริสา กรุณานนท์  - เพื่อนแม่เจ้าสาว",
+          guestCount: 1,
+          tableNumber: 9,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "เพื่อนพ่อ เพื่อนแม่บ่าวสาว",
+          detail1: "เพื่อนๆ ฝั่งแม่",
+          detail2: "",
+          tableGroup: "Mix Parent Friend & Fam",
+          name: "น้ากบ  - เพื่อนแม่เจ้าสาว",
+          guestCount: 1,
+          tableNumber: 9,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "เพื่อนพ่อ เพื่อนแม่บ่าวสาว",
+          detail1: "เพื่อนๆ ฝั่งแม่",
+          detail2: "",
+          tableGroup: "Mix Parent Friend & Fam",
+          name: "น้าฝน - เพื่อนแม่เจ้าสาว",
+          guestCount: 1,
+          tableNumber: 9,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "ญาติพี่น้อง",
+          detail1: "ญาติๆ ฝั่งพ่อ",
+          detail2: "",
+          tableGroup: "Jumm Dad Relative　１",
+          name: "วิวัฒน์ ปองเสงี่ยม - ญาติพ่อเจ้าบ่าว",
+          guestCount: 3,
+          tableNumber: 10,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "ญาติพี่น้อง",
+          detail1: "ญาติๆ ฝั่งพ่อ",
+          detail2: "",
+          tableGroup: "Jumm Dad Relative　１",
+          name: "โกวเล็ก (รถเข็น  1 ท่าน)  - ญาติพ่อเจ้าบ่าว",
+          guestCount: 5,
+          tableNumber: 10,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "ครอบครัวบ่าวสาว",
+          detail1: "",
+          detail2: "",
+          tableGroup: "Jumm Dad Relative　１",
+          name: "แจน พี่สาวจ้ำ - พี่น้องเจ้าบ่าว",
+          guestCount: 2,
+          tableNumber: 10,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "เพื่อนบ่าวสาว",
+          detail1: "จากที่เรียน",
+          detail2: "Bachelor - SIIT",
+          tableGroup: "Jumm SIIT",
+          name: "Gorn SIIT",
+          guestCount: 2,
+          tableNumber: 11,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "เพื่อนบ่าวสาว",
+          detail1: "จากที่เรียน",
+          detail2: "Bachelor - SIIT",
+          tableGroup: "Jumm SIIT",
+          name: "โจ๋สุดหล่อ　SIIT",
+          guestCount: 2,
+          tableNumber: 11,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "เพื่อนบ่าวสาว",
+          detail1: "จากที่เรียน",
+          detail2: "Bachelor - SIIT",
+          tableGroup: "Jumm SIIT",
+          name: "เตชนิธิ SIIT",
+          guestCount: 2,
+          tableNumber: 11,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "เพื่อนบ่าวสาว",
+          detail1: "จากที่เรียน",
+          detail2: "Bachelor - SIIT",
+          tableGroup: "Jumm SIIT",
+          name: "ภูวิช แอน　SIIT",
+          guestCount: 2,
+          tableNumber: 11,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "เพื่อนบ่าวสาว",
+          detail1: "จากที่เรียน",
+          detail2: "Bachelor - SIIT",
+          tableGroup: "Jumm SIIT",
+          name: "อิทธิพัทธ์ คำพา (เต้ย)　SIIT",
+          guestCount: 2,
+          tableNumber: 11,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "เพื่อนบ่าวสาว",
+          detail1: "จากที่เรียน",
+          detail2: "Bachelor - SIIT",
+          tableGroup: "Jumm SIIT 2",
+          name: "พลอานันต์  จองลิขิต  (นีโน่) SIIT",
+          guestCount: 1,
+          tableNumber: 12,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "เพื่อนบ่าวสาว",
+          detail1: "จากที่เรียน",
+          detail2: "Bachelor - SIIT",
+          tableGroup: "Jumm SIIT 2",
+          name: "อาร์ท SIIT",
+          guestCount: 1,
+          tableNumber: 12,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "เพื่อนบ่าวสาว",
+          detail1: "จากที่เรียน",
+          detail2: "High School - SJB",
+          tableGroup: "Jumm SIIT 2",
+          name: "แอลลี่ SJB",
+          guestCount: 1,
+          tableNumber: 12,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "เพื่อนบ่าวสาว",
+          detail1: "จากที่ทำงาน",
+          detail2: "FWD",
+          tableGroup: "Jumm SIIT 2",
+          name: "ณัฐพร ลิ้มตระกูลชัย (แนน) FWD",
+          guestCount: 1,
+          tableNumber: 12,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "เพื่อนบ่าวสาว",
+          detail1: "จากที่เรียน",
+          detail2: "Bachelor - SIIT",
+          tableGroup: "Jumm SIIT 2",
+          name: "Oil ออย SIIT",
+          guestCount: 2,
+          tableNumber: 12,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "เพื่อนบ่าวสาว",
+          detail1: "จากที่เรียน",
+          detail2: "Bachelor - SIIT",
+          tableGroup: "Jumm SIIT 2",
+          name: "ชมพูนุท ปลื้มจิต -ชมพู่ SIIT",
+          guestCount: 2,
+          tableNumber: 12,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "เพื่อนบ่าวสาว",
+          detail1: "จากที่เรียน",
+          detail2: "Bachelor - SIIT",
+          tableGroup: "Jumm SIIT 2",
+          name: "วุ้น SIIT",
+          guestCount: 2,
+          tableNumber: 12,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "ครอบครัวบ่าวสาว",
+          detail1: "",
+          detail2: "",
+          tableGroup: "JummParent Friend Mix",
+          name: "ไลวรรณ ปองเสงี่ยม (พ่อ + แม่) - พ่อแม่เจ้าบ่าว",
+          guestCount: 2,
+          tableNumber: 13,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "เพื่อนพ่อ เพื่อนแม่บ่าวสาว",
+          detail1: "เพื่อนๆ ฝั่งพ่อ",
+          detail2: "",
+          tableGroup: "JummParent Friend Mix",
+          name: "นาย สุวิทย์ ขจรเดชากุล - เพื่อนพ่อเจ้าบ่าว",
+          guestCount: 1,
+          tableNumber: 13,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "เพื่อนพ่อ เพื่อนแม่บ่าวสาว",
+          detail1: "เพื่อนๆ ฝั่งพ่อ",
+          detail2: "",
+          tableGroup: "JummParent Friend Mix",
+          name: "พรชัย ปิ่นทอง - เพื่อนพ่อเจ้าบ่าว",
+          guestCount: 1,
+          tableNumber: 13,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "เพื่อนพ่อ เพื่อนแม่บ่าวสาว",
+          detail1: "เพื่อนๆ ฝั่งพ่อ",
+          detail2: "",
+          tableGroup: "JummParent Friend Mix",
+          name: "พล.อ.โกญจนาท ศุกระเศรณี - เพื่อนพ่อเจ้าบ่าว",
+          guestCount: 1,
+          tableNumber: 13,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "เพื่อนพ่อ เพื่อนแม่บ่าวสาว",
+          detail1: "เพื่อนๆ ฝั่งพ่อ",
+          detail2: "",
+          tableGroup: "JummParent Friend Mix",
+          name: "นายริทัศน์ ศรีทะวงศ์ - เพื่อนพ่อเจ้าบ่าว",
+          guestCount: 2,
+          tableNumber: 13,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "เพื่อนพ่อ เพื่อนแม่บ่าวสาว",
+          detail1: "เพื่อนๆ ฝั่งแม่",
+          detail2: "",
+          tableGroup: "JummParent Friend Mix",
+          name: "พิษณุพร ขาวประเสริฐ - เพื่อนแม่เจ้าบ่าว",
+          guestCount: 1,
+          tableNumber: 13,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "เพื่อนพ่อ เพื่อนแม่บ่าวสาว",
+          detail1: "เพื่อนๆ ฝั่งแม่",
+          detail2: "",
+          tableGroup: "JummParent Friend Mix",
+          name: "อภิรัตน์ ตันติเวชกุบ (เอ๋) - เพื่อนแม่เจ้าบ่าว",
+          guestCount: 2,
+          tableNumber: 13,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "ญาติพี่น้อง",
+          detail1: "ญาติๆ ฝั่งพ่อ",
+          detail2: "",
+          tableGroup: "Jumm Dad Relative　２",
+          name: "ยุพดี ปองเสงี่ยม - ญาติพ่อเจ้าบ่าว",
+          guestCount: 4,
+          tableNumber: 14,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "ญาติพี่น้อง",
+          detail1: "ญาติๆ ฝั่งพ่อ",
+          detail2: "",
+          tableGroup: "Jumm Dad Relative　２",
+          name: "แปะฮ้วด - ญาติพ่อเจ้าบ่าว",
+          guestCount: 2,
+          tableNumber: 14,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "ญาติพี่น้อง",
+          detail1: "ญาติๆ ฝั่งพ่อ",
+          detail2: "",
+          tableGroup: "Jumm Dad Relative　２",
+          name: "พี่โจ้ ปองเสงี่ยม - ญาติพ่อเจ้าบ่าว",
+          guestCount: 4,
+          tableNumber: 14,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "เพื่อนบ่าวสาว",
+          detail1: "จากที่ทำงาน",
+          detail2: "CPALL",
+          tableGroup: "Mix　Work　IJ",
+          name: "แตมป์ CPALL",
+          guestCount: 1,
+          tableNumber: 15,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "เพื่อนบ่าวสาว",
+          detail1: "จากที่ทำงาน",
+          detail2: "CPALL",
+          tableGroup: "Mix　Work　IJ",
+          name: "โบ CPALL",
+          guestCount: 1,
+          tableNumber: 15,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "เพื่อนบ่าวสาว",
+          detail1: "จากที่ทำงาน",
+          detail2: "CPALL",
+          tableGroup: "Mix　Work　IJ",
+          name: "เอิร์ท CPALL",
+          guestCount: 1,
+          tableNumber: 15,
+        },
+        {
+          side: "เจ้าสาว",
+          relationship: "เพื่อนบ่าวสาว",
+          detail1: "จากที่ทำงาน",
+          detail2: "CPALL",
+          tableGroup: "Mix　Work　IJ",
+          name: "วี่ CPALL",
+          guestCount: 1,
+          tableNumber: 15,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "เพื่อนบ่าวสาว",
+          detail1: "จากที่ทำงาน",
+          detail2: "Jaspal",
+          tableGroup: "Mix　Work　IJ",
+          name: "ชนก อำไพ  - เจ Jaspal",
+          guestCount: 1,
+          tableNumber: 15,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "เพื่อนบ่าวสาว",
+          detail1: "จากที่ทำงาน",
+          detail2: "Jaspal",
+          tableGroup: "Mix　Work　IJ",
+          name: "อธิป เก้าเด่น - ตั้ม Jaspal",
+          guestCount: 1,
+          tableNumber: 15,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "เพื่อนบ่าวสาว",
+          detail1: "จากที่ทำงาน",
+          detail2: "Jaspal",
+          tableGroup: "Mix　Work　IJ",
+          name: "Chokchai Thawatcharaporn - Bank Jaspal",
+          guestCount: 2,
+          tableNumber: 15,
+        },
+        {
+          side: "เจ้าบ่าว",
+          relationship: "เพื่อนบ่าวสาว",
+          detail1: "จากที่ทำงาน",
+          detail2: "Jaspal",
+          tableGroup: "Mix　Work　IJ",
+          name: "พิทักษ์สิน สมวงศ์(ต๊ะ) - พี่ต้ะ Jaspal",
+          guestCount: 2,
+          tableNumber: 15,
+        },
       ];
 
       // === ELEMENTS ===
@@ -319,6 +1191,12 @@
       bgEl.style.backgroundImage = `url('${BACKGROUND_URL}')`;
 
       // === HELPERS ===
+      /**
+       * Set options for a <select>
+       * @param {HTMLSelectElement} select
+       * @param {string[]} options
+       * @param {string} placeholder
+       */
       function setOptions(select, options, placeholder) {
         select.innerHTML = "";
         const ph = document.createElement("option");
@@ -326,6 +1204,7 @@
         ph.textContent = placeholder;
         ph.selected = true;
         select.appendChild(ph);
+
         options.forEach((opt) => {
           const o = document.createElement("option");
           o.value = opt;
@@ -343,32 +1222,53 @@
       // === DYNAMIC OPTION BUILDERS ===
       function buildRelationships(side) {
         if (!side) return [];
-        const forSide = guestData.filter((g) => g.side === side);
-        const nonEmpty = uniqueSorted(
-          forSide.map((g) => (g.relationship || "").trim()).filter((s) => s !== "")
-        );
-        const hasEmpty = forSide.some((g) => !g.relationship || g.relationship.trim() === "");
-        // ถ้ามีรายชื่อที่ relationship ว่าง ให้เพิ่มตัวเลือก "ไม่ระบุ"
-        if (hasEmpty) nonEmpty.push("ไม่ระบุ");
-        return nonEmpty;
+        const rels = guestData
+          .filter((g) => g.side === side)
+          .map((g) => g.relationship);
+        return uniqueSorted(rels);
+      }
+
+      function buildDetail1(side, relationship) {
+        if (!side || !relationship) return [];
+        const d1 = guestData
+          .filter((g) => g.side === side && g.relationship === relationship)
+          .map((g) => g.detail1)
+          .filter((d) => d && d.trim() !== "");
+        return uniqueSorted(d1);
+      }
+
+      function buildDetail2(side, relationship, detail1) {
+        if (!side || !relationship || !detail1) return [];
+        const d2 = guestData
+          .filter(
+            (g) =>
+              g.side === side &&
+              g.relationship === relationship &&
+              g.detail1 === detail1
+          )
+          .map((g) => g.detail2)
+          .filter((d) => d && d.trim() !== "");
+        return uniqueSorted(d2);
       }
 
       function buildGuests(side, relationship, detail1, detail2) {
-        if (!side) return [];
-        let filtered = guestData.filter((g) => g.side === side);
-
-        if (relationship && relationship !== "ไม่ระบุ") {
-          filtered = filtered.filter((g) => (g.relationship || "").trim() === relationship.trim());
-        } else if (relationship === "ไม่ระบุ") {
-          filtered = filtered.filter((g) => !g.relationship || g.relationship.trim() === "");
-        }
-        // detail1/detail2 reserved for future (no-op now)
-
+        if (!side || !relationship) return [];
+        let filtered = guestData.filter(
+          (g) => g.side === side && g.relationship === relationship
+        );
+        if (detail1) filtered = filtered.filter((g) => g.detail1 === detail1);
+        if (detail2) filtered = filtered.filter((g) => g.detail2 === detail2);
         return uniqueSorted(filtered.map((g) => g.name));
       }
 
       // === STATE & EVENTS ===
       function resetAll() {
+        sideEl.value = "";
+        relEl.value = "";
+        detail1El.value = "";
+        detail2El.value = "";
+        guestEl.value = "";
+
         relEl.disabled = true;
         detail1El.disabled = true;
         detail2El.disabled = true;
@@ -383,6 +1283,7 @@
         detail2Wrap.classList.add("hidden");
 
         searchBtn.disabled = true;
+
         resultView.classList.add("hidden");
         formView.classList.remove("hidden");
       }
@@ -391,52 +1292,116 @@
         const side = sideEl.value;
 
         // Reset downstream
-        relEl.value = detail1El.value = detail2El.value = guestEl.value = "";
-        searchBtn.disabled = true;
+        relEl.value = "";
+        detail1El.value = "";
+        detail2El.value = "";
+        guestEl.value = "";
 
+        // Build relationships
         const relationships = buildRelationships(side);
+        setOptions(
+          relEl,
+          relationships,
+          side ? "เลือกความสัมพันธ์" : "กรุณาเลือกฝั่งก่อน"
+        );
+        relEl.disabled = !side;
 
-        if (side && relationships.length > 0) {
-          setOptions(relEl, relationships, "เลือกความสัมพันธ์");
-          relEl.disabled = false;
+        // Reset detail steps
+        detail1Wrap.classList.toggle("hidden", true);
+        detail2Wrap.classList.toggle("hidden", true);
+        detail1El.disabled = true;
+        detail2El.disabled = true;
+        guestEl.disabled = true;
+        setOptions(detail1El, [], "กรุณาเลือกความสัมพันธ์ก่อน");
+        setOptions(detail2El, [], "กรุณาเลือกขยายความ 1 ก่อน");
+        setOptions(guestEl, [], "กรุณาเลือกความสัมพันธ์ก่อน");
 
-          // reset lower levels
-          detail1Wrap.classList.add("hidden");
-          detail2Wrap.classList.add("hidden");
-          detail1El.disabled = true;
-          detail2El.disabled = true;
-
-          setOptions(guestEl, [], "กรุณาเลือกความสัมพันธ์ก่อน");
-          guestEl.disabled = true;
-        } else if (side && relationships.length === 0) {
-          // ไม่มี relationship เลย: ให้เลือกชื่อได้ทันทีจากฝั่ง
-          relEl.disabled = true;
-          setOptions(relEl, [], "ไม่มีความสัมพันธ์ให้เลือก");
-
-          const guests = buildGuests(side, "", "", "");
-          setOptions(guestEl, guests, "เลือกชื่อ");
-          guestEl.disabled = guests.length === 0;
-        } else {
-          resetAll();
-        }
+        searchBtn.disabled = true;
       });
 
       relEl.addEventListener("change", () => {
         const side = sideEl.value;
         const relationship = relEl.value;
 
-        detail1El.value = detail2El.value = guestEl.value = "";
+        // Reset deeper fields
+        detail1El.value = "";
+        detail2El.value = "";
+        guestEl.value = "";
         searchBtn.disabled = true;
 
-        // (ไม่มี detail1/detail2 ในชุดข้อมูลนี้)
-        detail1Wrap.classList.add("hidden");
-        detail2Wrap.classList.add("hidden");
-        detail1El.disabled = true;
-        detail2El.disabled = true;
+        // Build detail1
+        const d1 = buildDetail1(side, relationship);
+        if (d1.length > 0) {
+          setOptions(detail1El, d1, "เลือกขยายความ");
+          detail1El.disabled = false;
+          detail1Wrap.classList.remove("hidden");
+        } else {
+          // Hide detail1 and detail2 if not applicable
+          detail1Wrap.classList.add("hidden");
+          detail2Wrap.classList.add("hidden");
+          detail1El.disabled = true;
+          detail2El.disabled = true;
 
-        const guests = buildGuests(side, relationship, "", "");
-        setOptions(guestEl, guests, relationship ? "เลือกชื่อ" : "กรุณาเลือกความสัมพันธ์ก่อน");
+          // Build guests directly
+          const guests = buildGuests(side, relationship, "", "");
+          setOptions(
+            guestEl,
+            guests,
+            relationship ? "เลือกชื่อ" : "กรุณาเลือกความสัมพันธ์ก่อน"
+          );
+          guestEl.disabled = guests.length === 0;
+        }
+
+        // Always reset detail2
+        setOptions(detail2El, [], "กรุณาเลือกขยายความ 1 ก่อน");
+      });
+
+      detail1El.addEventListener("change", () => {
+        const side = sideEl.value;
+        const relationship = relEl.value;
+        const detail1 = detail1El.value;
+
+        // Reset deeper fields
+        detail2El.value = "";
+        guestEl.value = "";
+        searchBtn.disabled = true;
+
+        // Build detail2
+        const d2 = buildDetail2(side, relationship, detail1);
+        if (d2.length > 0) {
+          setOptions(detail2El, d2, "เลือกขยายความ");
+          detail2El.disabled = false;
+          detail2Wrap.classList.remove("hidden");
+        } else {
+          detail2Wrap.classList.add("hidden");
+          detail2El.disabled = true;
+
+          // Build guests directly
+          const guests = buildGuests(side, relationship, detail1, "");
+          setOptions(
+            guestEl,
+            guests,
+            detail1 ? "เลือกชื่อ" : "กรุณาเลือกความสัมพันธ์ก่อน"
+          );
+          guestEl.disabled = guests.length === 0;
+        }
+      });
+
+      detail2El.addEventListener("change", () => {
+        const side = sideEl.value;
+        const relationship = relEl.value;
+        const detail1 = detail1El.value;
+        const detail2 = detail2El.value;
+
+        // Build guests
+        const guests = buildGuests(side, relationship, detail1, detail2);
+        setOptions(
+          guestEl,
+          guests,
+          detail2 ? "เลือกชื่อ" : "กรุณาเลือกขยายความ 1 ก่อน"
+        );
         guestEl.disabled = guests.length === 0;
+        searchBtn.disabled = true;
       });
 
       guestEl.addEventListener("change", () => {
@@ -444,31 +1409,26 @@
         searchBtn.disabled = !hasAll;
       });
 
-      document.getElementById("searchBtn").addEventListener("click", () => {
+      searchBtn.addEventListener("click", () => {
         const side = sideEl.value;
-        const relationship = relEl.value;
         const name = guestEl.value;
         if (!side || !name) return;
 
-        // หาแมตช์: ถ้าเลือก "ไม่ระบุ" ให้หาเฉพาะ relationship ว่าง
-        const isUnspecified = relationship === "ไม่ระบุ" || relationship === "";
-        const match = guestData.find((g) =>
-          g.side === side &&
-          g.name === name &&
-          (isUnspecified ? (!g.relationship || g.relationship.trim() === "") : ((g.relationship || "").trim() === relationship.trim()))
-        );
-
+        const match = guestData.find((g) => g.side === side && g.name === name);
         if (match) {
-          document.getElementById("result-guestCount").textContent = String(match.guestCount);
-          document.getElementById("result-tableNumber").textContent = String(match.tableNumber);
+          resGuestCount.textContent = String(match.guestCount);
+          resTableNumber.textContent = String(match.tableNumber);
           formView.classList.add("hidden");
           resultView.classList.remove("hidden");
         } else {
+          // fallback if not found (shouldn't happen with the dropdown)
           alert("ไม่พบข้อมูลของคุณ กรุณาลองใหม่อีกครั้ง");
         }
       });
 
-      document.getElementById("resetBtn").addEventListener("click", resetAll);
+      resetBtn.addEventListener("click", () => {
+        resetAll();
+      });
 
       // First load
       resetAll();
